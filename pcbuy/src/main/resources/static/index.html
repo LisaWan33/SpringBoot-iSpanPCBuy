@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<!-- 加了圖片放大彈窗 不過圖是白色 有新增css  要獲取的圖加onclick="openModal(this.id)"    搜 姿加-->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description">
+    <meta name="author">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,300,400,500,700,900" rel="stylesheet">
+    <title>PCBUY</title>
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="/assets/css/indexrel.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/font-awesome.css">
+    <link rel="stylesheet" href="/assets/css/templatemo-softy-pinko.css">
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+        }
+
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content {
+            top: 80px;
+            display: block;
+            margin: auto;
+            width: auto;
+            height: auto;
+            max-width: 90%;
+            max-height: 80%;
+        }
+
+        .modal-content img {
+            pointer-events: none;
+        }
+    </style>
+
+
+
+
+
+</head>
+<script src="https://cdn.staticfile.org/echarts/4.8.0/echarts.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<body>
+<!-- ***** Header Area Start ***** -->
+<header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="#welcome" class="logo">
+                        <img src="/assets/images/PCBUY_logo.png" style="width: 120px;"/>
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+
+                    <ul class="nav">
+                        <li><a href="#purchase"> 產品購買 </a></li>
+                        <li><a href="intro.html"> 電腦主機零組件介紹 </a></li>
+<!--                        <li><a href="rank.html"> 效能排行天梯 </a></li>-->
+                        <li><a href="contact_us.html"> 聯絡我們 </a></li>
+                        <li><a href="/member/member_index.html" id="memberDiv" class="fa fa-user">會員中心</a></li>
+                    </ul>
+                    <a class='menu-trigger'>
+                        <span>菜單欄</span>
+                    </a>
+                    <!-- ***** Menu End ***** -->
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- ***** Header Area End ***** -->
+
+<!-- ***** Welcome Area Start ***** -->
+<div class="welcome-area" id="welcome">
+    <!-- ***** Header Text Start ***** -->
+    <div class="header-text">
+        <div class="container">
+            <div class="row">
+                <div class="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-md-12 col-sm-12">
+                    <br><br><br>
+                    <p style="font-size: xx-large;font-family: 'Hoefler Text'">&nbsp;PCBUY&nbsp;<i class="fa fa-gears"></i></p>
+                    <span style="font-size: 50px;color: snow;font-family:serif,sans-serif,cursive,fantasy,monospace;">打造屬於你的電腦</span>
+                    <p style="font-family: 'Hoefler Text'">Let's build a computer</p>
+                    <a href="#purchase" class="main-button-slider">立即選購</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ***** Header Text End ***** -->
+</div>
+
+<!-- ***** Welcome Area End ***** -->
+<div id="jump" ></div>
+<div  style="background-color: snow">
+    <br><br><br><br><br>
+    <!-- ***** Features Small Start ***** -->
+    <div class="container shop" id="purchase" style="font-family:sans-serif;">
+
+        <div class="card shadow-sm text-center p-2" style="border-radius: 20px">
+            <div style="display: flex; flex-direction: row; align-items: center; ">
+                <div class="col-3">
+                    <img id="cpuImage" onclick="openModal(this.id)"   class="imgbig" src="https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-01.svg" width="40px">
+                </div>
+                <div class="col-5" style= "display: flex; flex-direction: column; align-items: center;">
+                    <div class="h5 my-2">
+                        <span class="badge  font-weight-bold" style="font-size: 25px;color:black">處理器</span>
+                    </div>
+                    <br>
+                    <select id = "CPU" onchange="onSelectCPU()">
+                        <option selected="selected" disabled="disabled" id="disabledCPU" imgUrl="https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-01.svg"  value="" socket="" price="" watt="">請選擇一項處理器</option>
+                        <optgroup label="intel" id="intel"></optgroup>
+                        <optgroup label="AMD" id="AMD"></optgroup>
+                    </select>
+                </div>
+                <div style="border-left: 1px solid gray; padding: 20px 0;margin-left: auto;">&nbsp;</div>
+                <div class="col-2" style= "text-align:right;margin-right: auto">
+                    <div class="badge text-black-50 font-weight-bold" style="font-size: 20px;">價格</div><br>
+                    <a id="cpuPrice" class="font-weight-bold text-danger text-decoration-none" style="font-size: 25px;">NT$&nbsp;</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm text-center p-2" style="border-radius: 20px">
+            <div style="display: flex; flex-direction: row; align-items: center;">
+                <div class="col-3">
+                    <img id="mbImage" onclick="openModal(this.id)"   class="imgbig" src="https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-03.svg" width="130" height="130">
+                </div>
+                <div class="col-5" style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="h5 my-2">
+                        <span class="badge  font-weight-bold" style="font-size: 25px;color:black">主機板</span>
+                    </div>
+                    <br>
+                    <select id = "MB" onchange="onSelectMB()">
+                        <option selected="selected" disabled="disabled" id="disabledMB" imgUrl="https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-03.svg" value="" socket="" price="" watt="">請選擇一項主機板</option>
+                    </select>
+                </div>
+                <div style="border-left: 1px solid gray; padding: 20px 0;margin-left: auto;">&nbsp;</div>
+                <div class="col-2" style="text-align:right;margin-right: auto">
+                    <div class="badge text-black-50 font-weight-bold" style="font-size: 20px;">價格</div><br>
+                    <a id="mbPrice" class="font-weight-bold text-danger text-decoration-none" style="font-size: 25px;">NT$&nbsp;</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm text-center p-2" style="border-radius: 20px">
+            <div style="display: flex; flex-direction: row; align-items: center;">
+                <div class="col-3">
+                    <img id="dramImage" onclick="openModal(this.id)"   class="imgbig" src="https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-04.svg" width="130" height="130" style="">
+                </div>
+                <div class="col-5" style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="h5 my-2">
+                        <span class="badge  font-weight-bold" style="font-size: 25px;color:black">記憶體</span>
+                    </div>
+                    <br>
+                    <select id = "DRAM" onchange="onSelectDRAM()">
+                        <option selected="selected" disabled="disabled" id="disabledDRAM" imgUrl="https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-04.svg" value="" socket="" price="" watt="">請選擇一項記憶體</option>
+                    </select>
+                </div>
+                <div style="border-left: 1px solid gray; padding: 20px 0;margin-left: auto;">&nbsp;</div>
+                <div class="col-2" style="text-align:right;margin-right: auto">
+                    <div class="badge text-black-50 font-weight-bold" style="font-size: 20px;">價格</div><br>
+                    <a id="dramPrice" class="font-weight-bold text-danger text-decoration-none" style="font-size: 25px;">NT$&nbsp;</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm text-center p-2" style="border-radius: 20px">
+            <div style="display: flex; flex-direction: row; align-items: center;">
+                <div class="col-3">
+                    <img  id="gpuImage" onclick="openModal(this.id)"  class="imgbig" src="https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-05.svg" width="130" height="130">
+                </div>
+                <div class="col-5" style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="h5 my-2">
+                        <span class="badge  font-weight-bold" style="font-size: 25px;color:black">顯示卡</span>
+                    </div>
+                    <br>
+                    <select id = "GPU" onchange="onSelectGPU()">
+                        <option selected="selected" disabled="disabled" id="disabledGPU" imgUrl="https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-05.svg" value="" series="" price="" watt="">請選擇一項顯示卡</option>
+                    </select>
+                </div>
+                <div style="border-left: 1px solid gray; padding: 20px 0;margin-left: auto;">&nbsp;</div>
+                <div class="col-2" style="text-align:right;margin-right: auto">
+                    <div class="badge text-black-50 font-weight-bold" style="font-size: 20px;">價格</div><br>
+                    <a id="gpuPrice" class="font-weight-bold text-danger text-decoration-none" style="font-size: 25px;">NT$&nbsp;</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm text-center p-2" style="border-radius: 20px">
+            <div style="display: flex; flex-direction: row; align-items: center;"—>
+                <div class="col-3">
+                    <img id="storageImage" onclick="openModal(this.id)"  class="imgbig"  src="https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-06.svg" width="130" height="130">
+                </div>
+                <div class="col-5" style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="h5 my-2">
+                        <span class="badge  font-weight-bold" style="font-size: 25px;color:black">硬碟</span>
+                    </div>
+                    <br>
+                    <select id = "STORAGE" onchange="onSelectSTORAGE()">
+                        <option selected="selected" disabled="disabled" id="disabledSTORAGE" imgUrl="https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-06.svg" value="" series="" price="" watt="">請選擇一項硬碟</option>
+                    </select>
+                </div>
+                <div style="border-left: 1px solid gray; padding: 20px 0;margin-left: auto;">&nbsp;</div>
+                <div class="col-2" style="text-align:right;margin-right: auto">
+                    <div class="badge text-black-50 font-weight-bold" style="font-size: 20px;">價格</div><br>
+                    <a  id="storagePrice" class="font-weight-bold text-danger text-decoration-none" style="font-size: 25px;">NT$&nbsp;</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm text-center p-2" style="border-radius: 20px">
+            <div style="display: flex; flex-direction: row; align-items: center;">
+                <div class="col-3">
+                    <img id="coolerImage" onclick="openModal(this.id)"  class="imgbig" src="https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-02.svg" width="130" height="130" style="">
+                </div>
+                <div class="col-5" style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="h5 my-2">
+                        <span class="badge  font-weight-bold" style="font-size: 25px;color:black">散熱器</span>
+                    </div>
+                    <br>
+                    <select id = "COOLER" onchange="onSelectCOOLER()">
+                        <option  selected="selected" disabled="disabled" id="disabledCOOLER" imgUrl="https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-02.svg" value="" series="" price="" watt="">請選擇一項散熱器</option>
+                        <optgroup label="空冷式" id="coolers"></optgroup>
+                        <optgroup label="水冷式" id="coolers-Liquid"></optgroup>
+                    </select>
+                </div>
+                <div style="border-left: 1px solid gray; padding: 20px 0;margin-left: auto;">&nbsp;</div>
+                <div class="col-2" style="text-align:right;margin-right: auto">
+                    <div class="badge text-black-50 font-weight-bold" style="font-size: 20px;">價格</div><br>
+                    <a id="coolerPrice" class="font-weight-bold text-danger text-decoration-none" style="font-size: 25px;">NT$&nbsp;</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm text-center p-2" style="border-radius: 20px">
+            <div style="display: flex; flex-direction: row; align-items: center;">
+                <div class="col-3">
+                    <img id="powerImage" onclick="openModal(this.id)"  class="imgbig" src="https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-07.svg" width="130" height="130" style="">
+                </div>
+                <div class="col-5" style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="h5 my-2">
+                        <span class="badge  font-weight-bold" style="font-size: 25px;color:black">電源供應器</span>
+                    </div>
+                    <br>
+                    <select id = "POWER" onchange="onSelectPOWER()">
+                        <option  selected="selected" disabled="disabled" id="disabledPOWER" imgUrl="https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-07.svg" value="" series="" price="" watt="">請選擇一項電源供應器</option>
+                        <optgroup label="450瓦以上" id="power_450"></optgroup>
+                        <optgroup label="650瓦以上" id="power_650"></optgroup>
+                        <optgroup label="850瓦以上" id="power_850"></optgroup>
+                    </select>
+                </div>
+                <div style="border-left: 1px solid gray; padding: 20px 0;margin-left: auto;">&nbsp;</div>
+                <div class="col-2" style="text-align:right;margin-right: auto">
+                    <div class="badge text-black-50 font-weight-bold" style="font-size: 20px;">價格</div><br>
+                    <a id="powerPrice" class="font-weight-bold text-danger text-decoration-none" style="font-size: 25px;">NT$ &nbsp;</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm text-center p-2" style="border-radius: 20px">
+            <div style="display: flex; flex-direction: row; align-items: center;">
+                <div class="col-3">
+                    <img id="caseImage" onclick="openModal(this.id)"  class="imgbig" src="https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-08.svg" width="130" height="130" style="">
+                </div>
+                <div class="col-5" style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="h5 my-2">
+                        <span class="badge  font-weight-bold" style="font-size: 25px;color:black">機殼</span>
+                    </div>
+                    <br>
+                    <select id = "CASE" onchange="onSelectCASE()">
+                        <option  selected="selected" disabled="disabled" id="disabledCASE" imgUrl="https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-08.svg" value="" series="" price="" watt="">請選擇一項機殼</option>
+                    </select>
+                </div>
+                <div style="border-left: 1px solid gray; padding: 20px 0;margin-left: auto;">&nbsp;</div>
+                <div class="col-2" style="text-align:right;margin-right: auto">
+                    <div class="badge text-black-50 font-weight-bold" style="font-size: 20px;">價格</div><br>
+                    <a id="casePrice" class="font-weight-bold text-danger text-decoration-none" style="font-size: 25px;">NT$ &nbsp;</a>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="itemcount">
+            <div class="inner">
+                <div class="d-flex">
+                    <div class="bordtest " style="display: flex;">
+                        <div class="anyitem " style="font-size: 20px;"> 耗電量 </div>
+                        <a id="totalWatt" class="font-weight-bold text-warning text-decoration-none "
+                           style="font-size: 25px;margin-left:30px ">0瓦</a>
+                    </div>
+                    <div class="bordtest " style="display: flex;">
+                        <div class="anyitem" style="font-size: 20px;">總價錢</div>
+                        <a id="totalPrice" class="font-weight-bold text-danger text-decoration-none "
+                           style="font-size: 25px;margin-left:30px;">NT$&nbsp;0元</a>
+                    </div>
+                    <div class="bordtest" style="margin-left: auto;">
+                        <!--                        <button type="submit" id="clear" class="main-button">清空重選</button>-->
+                    </div>
+                    <div class="bordtest" style=" margin-left: auto;">
+                        <input type="button" id="CART" class="shopbtn" value="加進購物車"></input>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 姿加 -->
+        <div id="myModal" class="modal">
+            <span class="close">&times;</span>
+            <img id="modalImg" class="modal-content">
+        </div>
+    </div>
+</div>
+
+<!-- ***** Footer Start ***** -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <!--                    <ul class="social">-->
+                <!--                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>-->
+                <!--                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>-->
+                <!--                        <li><a href="#"><i class="fa fa-rss"></i></a></li>-->
+                <!--                        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>-->
+                <!--                    </ul>-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <p class="copyright">Copyright &copy;2023 PCBuy company</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/assets/js/jquery-2.1.0.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="/assets/js/popper.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+
+<!-- Plugins -->
+<script src="/assets/js/scrollreveal.min.js"></script>
+<script src="/assets/js/waypoints.min.js"></script>
+<script src="/assets/js/jquery.counterup.min.js"></script>
+<script src="/assets/js/imgfix.min.js"></script>
+
+<!-- Global Init -->
+<script src="/assets/js/custom.js"></script>
+
+
+<!-- 加 -->
+<script type="text/javascript">
+    window.addEventListener('scroll', function () {
+        let top = window.scrollY;
+        if (top > 320) {
+            $('.itemcount').css('display', 'block');
+        } else {
+            $('.itemcount').css('display', 'none');
+        }
+    });
+</script>
+<!--  畫面預設載入CPU的選單   -->
+<script>
+    jQuery.support.cors = true;
+
+    var cartLength
+    var userId
+    var cpuPrice=0, mbPrice=0, dramPrice=0, gpuPrice=0, storagePrice=0, coolerPrice=0, powerPrice=0, casePrice=0
+    var cpuWatt=0, mbWatt=0, dramWatt=0, gpuWatt=0, storageWatt=0, powerWatt=0
+    var totalWatt=0, totalPrice=0
+    var sizeForCase
+    var gpuLengthForCase=0, coolerLengthForCase=0, coolerHeightForCase=0
+
+    $(document).ready(function () {
+
+        //先載入不需要篩選的Category
+        showItemCPUv2()
+        showItemGPU()
+        showItemSTORAGE()
+        showItemCOOLER()
+        showItemPOWER()
+
+        $.ajax({
+            url: '/users/current',
+            type: "get",
+            dataType: "json",
+            success:function (userinfo){
+                userId = userinfo.userId
+                console.log("現在的使用者為=" + userId)
+
+                $.ajax({
+                    url: '/users/' + userId +'/cart',
+                    type: "get",
+                    dataType: "json",
+                    success:function (cart){
+                        cartLength = cart.length
+                        console.log("現在購物車length=" + cartLength)
+                    }
+                })
+            }
+        })
+
+    })
+
+    function calculator(){
+        totalWatt = parseInt(cpuWatt) + parseInt(mbWatt) + parseInt(dramWatt) + parseInt(gpuWatt) + parseInt(storageWatt)
+
+        if (totalWatt > powerWatt){
+            $('#POWER').empty().append("<option value = '' socket='' = '' disabled='disabled' selected='selected'>請選擇一項電源供應器</option>")
+            $('#POWER').append("<optgroup label='450瓦以上' id='power_450'></optgroup>")
+            $('#POWER').append("<optgroup label='650瓦以上' id='power_650'></optgroup>")
+            $('#POWER').append("<optgroup label='850瓦以上' id='power_850'></optgroup>")
+            powerWatt=0; powerPrice=0; $('#powerImage').attr('src',"https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-07.svg")
+            $('#powerPrice').text("NT$")
+            showItemPOWER(totalWatt)
+        }
+
+        totalPrice = parseInt(cpuPrice) + parseInt(mbPrice) + parseInt(dramPrice) + parseInt(gpuPrice) + parseInt(storagePrice) + parseInt(coolerPrice) + parseInt(powerPrice) + parseInt(casePrice)
+        $('#totalWatt').text(totalWatt + "瓦")
+        $('#totalPrice').text("NT$ " + totalPrice.toLocaleString('zh-TW') + "元")
+    }
+
+    function onSelectCPU() {
+        var cpuIdSelected       = $('#CPU').find(':selected').val()
+        var cpuNameSelected     = $('#CPU').find(':selected').text()
+        var cpuSocketSelected   = $('#CPU').find(':selected').attr('socket')
+        var cpuImageUrlSelected = $('#CPU').find(':selected').attr('imageUrl');
+        var cpuWattSelected     = $('#CPU').find(':selected').attr('watt');
+        var cpuPriceSelected    = $('#CPU').find(':selected').attr('price');
+        cpuWatt  = cpuWattSelected
+        cpuPrice = cpuPriceSelected
+        console.log("cpuId=" + cpuIdSelected)
+        console.log("cpuName=" + cpuNameSelected)
+        console.log("cpuSocket=" + cpuSocketSelected)
+        console.log("cpuImageUrl=" + cpuImageUrlSelected)
+        console.log("cpuWatt=" + cpuWattSelected)
+        console.log("cpuPrice=" + cpuPriceSelected)
+        $('#cpuImage').attr('src',cpuImageUrlSelected);
+        $('#cpuPrice').text("NT$ "+cpuPriceSelected)
+
+        $('#MB').empty().append("<option value = '' series = '' disabled='disabled' selected='selected'>請選擇一項主機板</option>")
+        mbWatt=0; mbPrice=0; $('#mbImage').attr('src',"https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-03.svg")
+        $('#mbPrice').text("NT$ ")
+
+        $('#DRAM').empty().append("<option value = '' socket='' = '' disabled='disabled' selected='selected'>請選擇一項記憶體</option>")
+        dramWatt=0; dramPrice=0; $('#dramImage').attr('src',"https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-04.svg")
+        $('#dramPrice').text("NT$ ")
+
+        showItemMB(cpuSocketSelected)
+        calculator()
+    }
+
+    function onSelectMB() {
+        var mbIdSelected       = $('#MB').find(':selected').val()
+        var mbNameSelected     = $('#MB').find(':selected').text()
+        var mbSeriesSelected   = $('#MB').find(':selected').attr('series')
+        var mbSizeSelected     = $('#MB').find(':selected').attr('size')
+        var mbImageUrlSelected = $('#MB').find(':selected').attr('imageUrl');
+        var mbWattSelected     = $('#MB').find(':selected').attr('watt');
+        var mbPriceSelected    = $('#MB').find(':selected').attr('price');
+        mbWatt  = mbWattSelected
+        mbPrice = mbPriceSelected
+        sizeForCase = mbSizeSelected
+        console.log("mbId=" + mbIdSelected)
+        console.log("mbName=" + mbNameSelected)
+        console.log("mbSeries=" + mbSeriesSelected)
+        console.log("mbSize=" + mbSizeSelected)
+        console.log("mbImageUrl=" + mbImageUrlSelected)
+        console.log("mbWatt=" + mbWattSelected)
+        console.log("mbPrice=" + mbPriceSelected)
+        $('#mbImage').attr('src',mbImageUrlSelected);
+        $('#mbPrice').text("NT$ "+mbPriceSelected)
+
+        $('#DRAM').empty().append("<option value = '' socket='' disabled='disabled' selected='selected'>請選擇一項記憶體</option>")
+        dramWatt=0; dramPrice=0; $('#dramImage').attr('src',"https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-04.svg")
+        $('#dramPrice').text("NT$ ")
+        showItemDRAM(mbSeriesSelected)
+
+        $('#CASE').empty().append("<option value = '' disabled='disabled' selected='selected'>請選擇一項機殼</option>")
+        casePrice=0; $('#caseImage').attr('src',"https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-08.svg")
+        $('#casePrice').text("NT$ ")
+        showItemCASE(sizeForCase, parseFloat(gpuLengthForCase), parseFloat(coolerLengthForCase), parseFloat(coolerHeightForCase))
+
+        calculator()
+    }
+
+    function onSelectDRAM() {
+        var dramIdSelected       = $('#DRAM').find(':selected').val()
+        var dramNameSelected     = $('#DRAM').find(':selected').text()
+        var dramSocketSelected   = $('#DRAM').find(':selected').attr('socket')
+        var dramImageUrlSelected = $('#DRAM').find(':selected').attr('imageUrl');
+        var dramWattSelected     = $('#DRAM').find(':selected').attr('watt');
+        var dramPriceSelected    = $('#DRAM').find(':selected').attr('price');
+        dramWatt  = dramWattSelected
+        dramPrice = dramPriceSelected
+        console.log("dramId=" + dramIdSelected)
+        console.log("dramName=" + dramNameSelected)
+        console.log("dramSocket=" + dramSocketSelected)
+        console.log("dramImageUrl=" + dramImageUrlSelected)
+        console.log("dramWatt=" + dramWattSelected)
+        console.log("dramPrice=" + dramPriceSelected)
+        $('#dramImage').attr('src',dramImageUrlSelected);
+        $('#dramPrice').text("NT$ "+dramPriceSelected)
+
+        // $('#MB').empty().append("<option value = '' series = ''>請選擇一項主機板</option>")
+        // $('#DRAM').empty().append("<option value = '' socket='' = '' disabled='disabled' selected='selected'>請選擇一項記憶體</option>")
+        // mbWatt=0; mbPrice=0; $('#mbImage').attr('src',"https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-04.svg")
+        // $('#dramPrice').text("NT$ ")
+        // showItemDRAM(mbSeriesSelected)
+
+        calculator()
+    }
+
+    function onSelectGPU() {
+        var gpuIdSelected       = $('#GPU').find(':selected').val()
+        var gpuNameSelected     = $('#GPU').find(':selected').text()
+        var gpuLengthSelected   = $('#GPU').find(':selected').attr('gpuLength')
+        var gpuImageUrlSelected = $('#GPU').find(':selected').attr('imageUrl');
+        var gpuWattSelected     = $('#GPU').find(':selected').attr('watt');
+        var gpuPriceSelected    = $('#GPU').find(':selected').attr('price');
+        gpuWatt  = gpuWattSelected
+        gpuPrice = gpuPriceSelected
+        gpuLengthForCase = gpuLengthSelected
+        console.log("gpuId=" + gpuIdSelected)
+        console.log("gpuName=" + gpuNameSelected)
+        console.log("gpuLength=" + gpuLengthSelected)
+        console.log("gpuImageUrl=" + gpuImageUrlSelected)
+        console.log("gpuWatt=" + gpuWattSelected)
+        console.log("gpuPrice=" + gpuPriceSelected)
+        $('#gpuImage').attr('src',gpuImageUrlSelected);
+        $('#gpuPrice').text("NT$ "+gpuPriceSelected)
+
+        $('#CASE').empty().append("<option value = '' disabled='disabled' selected='selected'>請選擇一項機殼</option>")
+        casePrice=0; $('#caseImage').attr('src',"https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-08.svg")
+        $('#casePrice').text("NT$ ")
+        showItemCASE(sizeForCase, parseFloat(gpuLengthForCase), parseFloat(coolerLengthForCase), parseFloat(coolerHeightForCase))
+
+        calculator()
+    }
+
+    function onSelectSTORAGE() {
+        var storageIdSelected       = $('#STORAGE').find(':selected').val()
+        var storageNameSelected     = $('#STORAGE').find(':selected').text()
+        var storageSeriesSelected   = $('#STORAGE').find(':selected').attr('series')
+        var storageImageUrlSelected = $('#STORAGE').find(':selected').attr('imageUrl');
+        var storageWattSelected     = $('#STORAGE').find(':selected').attr('watt');
+        var storagePriceSelected    = $('#STORAGE').find(':selected').attr('price');
+        storageWatt  = storageWattSelected
+        storagePrice = storagePriceSelected
+        console.log("storageId=" + storageIdSelected)
+        console.log("storageName=" + storageNameSelected)
+        console.log("storageSeries=" + storageSeriesSelected)
+        console.log("storageImageUrl=" + storageImageUrlSelected)
+        console.log("storageWatt=" + storageWattSelected)
+        console.log("storagePrice=" + storagePriceSelected)
+        $('#storageImage').attr('src',storageImageUrlSelected);
+        $('#storagePrice').text("NT$ "+storagePriceSelected)
+
+        calculator()
+    }
+
+    function onSelectCOOLER() {
+        var coolerIdSelected        = $('#COOLER').find(':selected').val()
+        var coolerNameSelected      = $('#COOLER').find(':selected').text()
+        var coolerSeriesSelected    = $('#COOLER').find(':selected').attr('series')
+        var coolerLengthSelected    = $('#COOLER').find(':selected').attr('coolerLength')
+        var coolerHeightSelected    = $('#COOLER').find(':selected').attr('coolerHeight')
+        var coolerImageUrlSelected  = $('#COOLER').find(':selected').attr('imageUrl');
+        var coolerWattSelected      = $('#COOLER').find(':selected').attr('watt');
+        var coolerPriceSelected     = $('#COOLER').find(':selected').attr('price');
+        coolerWatt  = coolerWattSelected
+        coolerPrice = coolerPriceSelected
+        coolerLengthForCase = coolerLengthSelected
+        coolerHeightForCase = coolerHeightSelected
+        console.log("coolerId=" + coolerIdSelected)
+        console.log("coolerName=" + coolerNameSelected)
+        console.log("coolerSeries=" + coolerSeriesSelected)
+        console.log("coolerLength=" + coolerLengthSelected)
+        console.log("coolerHeight=" + coolerHeightSelected)
+        console.log("coolerImageUrl=" + coolerImageUrlSelected)
+        console.log("coolerWatt=" + coolerWattSelected)
+        console.log("coolerPrice=" + coolerPriceSelected)
+        $('#coolerImage').attr('src',coolerImageUrlSelected);
+        $('#coolerPrice').text("NT$ "+coolerPriceSelected)
+
+        $('#CASE').empty().append("<option value = '' disabled='disabled' selected='selected'>請選擇一項機殼</option>")
+        casePrice=0; $('#caseImage').attr('src',"https://storage-asset.msi.com/event/mb/2018/how-to-build-a-pc/images/svg/icob-btn-08.svg")
+        $('#casePrice').text("NT$ ")
+        showItemCASE(sizeForCase, parseFloat(gpuLengthForCase), parseFloat(coolerLengthForCase), parseFloat(coolerHeightForCase))
+
+        calculator()
+    }
+
+    function onSelectPOWER() {
+        var powerIdSelected       = $('#POWER').find(':selected').val()
+        var powerNameSelected     = $('#POWER').find(':selected').text()
+        var powerSeriesSelected   = $('#POWER').find(':selected').attr('series')
+        var powerImageUrlSelected = $('#POWER').find(':selected').attr('imageUrl');
+        var powerWattSelected     = $('#POWER').find(':selected').attr('watt');
+        var powerPriceSelected    = $('#POWER').find(':selected').attr('price');
+        powerWatt  = powerWattSelected
+        powerPrice = powerPriceSelected
+        console.log("powerId=" + powerIdSelected)
+        console.log("powerName=" + powerNameSelected)
+        console.log("powerSeries=" + powerSeriesSelected)
+        console.log("powerImageUrl=" + powerImageUrlSelected)
+        console.log("powerWatt=" + powerWattSelected)
+        console.log("powerPrice=" + powerPriceSelected)
+        $('#powerImage').attr('src',powerImageUrlSelected);
+        $('#powerPrice').text("NT$ "+powerPriceSelected)
+
+        calculator()
+    }
+
+    function onSelectCASE() {
+        var caseIdSelected       = $('#CASE').find(':selected').val()
+        var caseNameSelected     = $('#CASE').find(':selected').text()
+        var caseImageUrlSelected = $('#CASE').find(':selected').attr('imageUrl');
+        var casePriceSelected    = $('#CASE').find(':selected').attr('price');
+        casePrice = casePriceSelected
+        console.log("caseId=" + caseIdSelected)
+        console.log("caseName=" + caseNameSelected)
+        console.log("caseImageUrl=" + caseImageUrlSelected)
+        console.log("casePrice=" + casePriceSelected)
+        $('#caseImage').attr('src',caseImageUrlSelected);
+        $('#casePrice').text("NT$ "+casePriceSelected)
+
+        calculator()
+    }
+
+    function showItemCPU(){
+        $.ajax({
+            url: 'http://localhost:8080/products/CPU/List',
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                console.log(data)
+                $.each(data, function (key, value) {
+                    // $('#cpuName').append('<option value="' + key + '">' + data[].productName + '</option>')
+                    // $('#CPU').append('<option value=" '+data[key].productId+' "socket=' +data[key].socket+ '>' + data[key].productName + '</option>')
+                    $('#CPU').append('<option value="'+ data[key].productId+ '"socket="'  +data[key].socket+ '"imageUrl="' +data[key].imageUrl+  '"watt="'+data[key].watt+ '"price='+data[key].price + '>' + data[key].productName+ '</option>')                    })
+                // 備用格式$('#CPU').append('<option value=" '+ data[key].productId+ ' "socket=" '  +data[key].socket+ ' " imageUrl=" ' +data[key].imageUrl+  ' "watt=" '+data[key].watt+ ' " price='+data[key].price + '>' + data[key].productName+ '</option>')                    })
+
+            },
+            error: function (data) {
+                alert("fail");
+            }
+        });
+    }
+
+    function showItemCPUv2(){
+        $.ajax({
+            url: 'http://localhost:8080/products/CPU/Filter',
+            type: "get",
+            dataType: "json",
+            data:{},
+            success: function (data) {
+                console.log(data)
+                $.each(data, function (key, value) {
+                    if(data[key].brand === "intel"){
+                        $('#intel').append('<option value="'+ data[key].productId+ '"socket="'  +data[key].socket+ '"imageUrl="' +data[key].imageUrl+  '"watt="'+data[key].watt+ '"price='+data[key].price + '>' + data[key].productName+ '</option>')
+                    }else if (data[key].brand === "AMD"){
+                        $('#AMD').append('<option value="'+ data[key].productId+ '"socket="'  +data[key].socket+ '"imageUrl="' +data[key].imageUrl+  '"watt="'+data[key].watt+ '"price='+data[key].price + '>' + data[key].productName+ '</option>')
+                    }else {}
+                })
+            },
+            error: function (data) {
+                alert("fail");
+            }
+        });
+    }
+
+    function showItemMB(cpuSocket){
+        $.ajax({
+            url: 'http://localhost:8080/products/MB/Filter',
+            type: "get",
+            data:{"filterI":cpuSocket},
+            dataType: "json",
+            success: function (data) {
+                console.log(data)
+                $.each(data, function (key, value) {
+                    // $('#MB').append('<option value=" '+ data[key].productId+' "series="'  +data[key].series+ '"imageUrl="' +data[key].imageUrl+  '"watt="'+data[key].watt+ '"price='+data[key].price + '>' + data[key].productName+ '</option>')
+
+                    $('#MB').append('<option value="'+data[key].productId+'"series="'+data[key].series+'"imageUrl="'+data[key].imageUrl+'"watt="'+data[key].watt+'"size="'+data[key].size+'"price="'+data[key].price+'">'+data[key].productName+'</option>')
+
+                    // 完全體拼接$('#MB').append('<option value="'+data[key].productId+'"series="'+data[key].series+'"imageUrl="'+data[key].imageUrl+'"watt="'+data[key].watt+'"size="'+data[key].size+'"gpuLength="'+data[key].gpuLength+'"coolerLength="'+data[key].coolerLength+'"coolerHeigth="'+data[key].coolerHeight+'"price="'+data[key].price+'">'+data[key].productName+'</option>')
+
+                })
+            },
+            error: function (data) {
+                alert("fail");
+            }
+        })
+    }
+
+    function showItemDRAM(mbSeries){
+        $.ajax({
+            url: 'http://localhost:8080/products/DRAM/Filter',
+            type: "get",
+            data:{"filterI":mbSeries},
+            dataType: "json",
+            success: function (data) {
+                console.log(data)
+                $.each(data, function (key, value) {
+                    $('#DRAM').append('<option value="'+data[key].productId+'"socket="'+data[key].socket+'"imageUrl="'+data[key].imageUrl+'"watt="'+data[key].watt+'"price='+data[key].price+'>'+data[key].productName+'</option>')
+                })
+            },
+            error: function (data) {
+                alert("fail");
+            }
+        })
+    }
+
+    function showItemGPU(){
+        $.ajax({
+            url: 'http://localhost:8080/products/GPU/Filter',
+            type: "get",
+            data:{},
+            dataType: "json",
+            success: function (data) {
+                console.log(data)
+                $.each(data, function (key, value) {
+                    $('#GPU').append('<option value="'+data[key].productId+'"gpuLength="'+data[key].gpuLength+'"imageUrl="'+data[key].imageUrl+'"watt="'+data[key].watt+'"price='+data[key].price+'>'+data[key].productName+'</option>')
+                })
+            },
+            error: function (data) {
+                alert("fail");
+            }
+        })
+    }
+
+    function showItemSTORAGE(){
+        $.ajax({
+            url: 'http://localhost:8080/products/STORAGE/Filter',
+            type: "get",
+            data:{},
+            dataType: "json",
+            success: function (data) {
+                console.log(data)
+                $.each(data, function (key, value) {
+                    $('#STORAGE').append('<option value="'+data[key].productId+'"series="'+data[key].series+'"imageUrl="'+data[key].imageUrl+'"watt="'+data[key].watt+'"price='+data[key].price+'>'+data[key].productName+'</option>')
+                })
+            },
+            error: function (data) {
+                alert("fail");
+            }
+        })
+    }
+
+    function showItemCOOLER(){
+        $.ajax({
+            url: 'http://localhost:8080/products/COOLER/Filter',
+            type: "get",
+            data:{},
+            dataType: "json",
+            success: function (data) {
+                console.log(data)
+                $.each(data, function (key, value) {
+                    if(data[key].series === "氣冷式"){
+                        $('#coolers').append('<option value="'+data[key].productId+'"series="'+data[key].series+'"imageUrl="'+data[key].imageUrl+'"size="'+data[key].size+'"coolerLength="'+data[key].coolerLength+'"coolerHeight="'+data[key].coolerHeight+'"price="'+data[key].price+'">'+data[key].productName+'</option>')
+                    }else if (data[key].series === "水冷式"){
+                        $('#coolers-Liquid').append('<option value="'+data[key].productId+'"series="'+data[key].series+'"imageUrl="'+data[key].imageUrl+'"size="'+data[key].size+'"coolerLength="'+data[key].coolerLength+'"coolerHeight="'+data[key].coolerHeight+'"price="'+data[key].price+'">'+data[key].productName+'</option>')
+                    }else {
+                        $('#coolers').append('<option value="'+data[key].productId+'"series="'+data[key].series+'"imageUrl="'+data[key].imageUrl+'"size="'+data[key].size+'"coolerLength="'+data[key].coolerLength+'"coolerHeight="'+data[key].coolerHeight+'"price="'+data[key].price+'">'+data[key].productName+'</option>')
+                    }
+                })
+            },
+            error: function (data) {
+                alert("fail");
+            }
+        })
+    }
+
+    function showItemPOWER(totalWatt){
+        $.ajax({
+            url: 'http://localhost:8080/products/POWER/Filter',
+            type: "get",
+            data:{"filterI":totalWatt},
+            dataType: "json",
+            success: function (data) {
+                console.log(data)
+                $.each(data, function (key, value) {
+                    if(parseInt(data[key].watt) >= 450 && parseInt(data[key].watt) < 650){
+                        $('#power_450').append('<option value="'+data[key].productId+'"series="'+data[key].series+'"imageUrl="'+data[key].imageUrl+'"size="'+data[key].size+'"watt="'+data[key].watt+'"price="'+data[key].price+'">'+data[key].productName+'</option>')
+                    }else if (parseInt(data[key].watt) >= 650 && parseInt(data[key].watt) < 850){
+                        $('#power_650').append('<option value="'+data[key].productId+'"series="'+data[key].series+'"imageUrl="'+data[key].imageUrl+'"size="'+data[key].size+'"watt="'+data[key].watt+'"price="'+data[key].price+'">'+data[key].productName+'</option>')
+                    }else {
+                        $('#power_850').append('<option value="'+data[key].productId+'"series="'+data[key].series+'"imageUrl="'+data[key].imageUrl+'"size="'+data[key].size+'"watt="'+data[key].watt+'"price="'+data[key].price+'">'+data[key].productName+'</option>')
+                    }
+                })
+            },
+            error: function (data) {
+                alert("fail");
+            }
+        })
+    }
+
+    function showItemCASE(size, gpuLength, coolerLength, coolerHeight){
+        // console.log("我是showItemCASE() 傳進的參數為" + size +" "+ gpuLength +" "+ coolerLength +" "+ coolerHeight )
+        $.ajax({
+            url: 'http://localhost:8080/products/CASE/Filter',
+            type: "get",
+            data:{},
+            dataType: "json",
+            success: function (data) {
+                // console.log(data)
+                if(size === "E-ATX"){
+                    // console.log("showItemCASE()的size=Ｅ-ATX 所以我進來了")
+                    $.each(data, function (key, value) {
+                        if (data[key].size === "E-ATX" && parseFloat(data[key].gpuLength) >= gpuLength && parseFloat(data[key].coolerLength) >= coolerLength && parseFloat(data[key].coolerHeight) >= coolerHeight){
+                            // console.log("執行點1")
+                            $('#CASE').append('<option value="'+data[key].productId+'"imageUrl="'+data[key].imageUrl+'"price="'+data[key].price+'">'+data[key].productName+'</option>')
+                        }
+                    })
+                }else if (size === "ATX"){
+                    // console.log("showItemCASE()的size=ATX 所以我進來了")
+                    $.each(data, function (key, value) {
+                        if (data[key].size === "E-ATX" && parseFloat(data[key].gpuLength) >= gpuLength && parseFloat(data[key].coolerLength) >= coolerLength && parseFloat(data[key].coolerHeight) >= coolerHeight) {
+                            // console.log("執行點2")
+                            $('#CASE').append('<option value="' + data[key].productId + '"imageUrl="' + data[key].imageUrl + '"price="' + data[key].price + '">' + data[key].productName + '</option>')
+                        } else if (data[key].size === "ATX" && parseFloat(data[key].gpuLength) >= gpuLength && parseFloat(data[key].coolerLength) >= coolerLength && parseFloat(data[key].coolerHeight) >= coolerHeight) {
+                            // console.log("執行點3")
+                            $('#CASE').append('<option value="' + data[key].productId + '"imageUrl="' + data[key].imageUrl + '"price="' + data[key].price + '">' + data[key].productName + '</option>')
+                        }
+                    })
+                }else if (size === "m-ATX"){
+                    $.each(data, function (key, value) {
+                        if (data[key].size === "E-ATX" && parseFloat(data[key].gpuLength) >= gpuLength && parseFloat(data[key].coolerLength) >= coolerLength && parseFloat(data[key].coolerHeight) >= coolerHeight) {
+                            // console.log("執行點4")
+                            $('#CASE').append('<option value="' + data[key].productId + '"imageUrl="' + data[key].imageUrl + '"price="' + data[key].price + '">' + data[key].productName + '</option>')
+                        } else if (data[key].size === "ATX" && parseFloat(data[key].gpuLength) >= gpuLength && parseFloat(data[key].coolerLength) >= coolerLength && parseFloat(data[key].coolerHeight) >= coolerHeight) {
+                            // console.log("執行點5")
+                            $('#CASE').append('<option value="' + data[key].productId + '"imageUrl="' + data[key].imageUrl + '"price="' + data[key].price + '">' + data[key].productName + '</option>')
+                        } else if (data[key].size === "m-ATX" && parseFloat(data[key].gpuLength) >= gpuLength && parseFloat(data[key].coolerLength) >= coolerLength && parseFloat(data[key].coolerHeight) >= coolerHeight) {
+                            // console.log("執行點6")
+                            $('#CASE').append('<option value="' + data[key].productId + '"imageUrl="' + data[key].imageUrl + '"price="' + data[key].price + '">' + data[key].productName + '</option>')
+                        }
+                    })
+                }else if (size === "mini-iTX"){
+                    $.each(data, function (key, value) {
+                        if (data[key].size === "E-ATX" && parseFloat(data[key].gpuLength) >= gpuLength && parseFloat(data[key].coolerLength) >= coolerLength && parseFloat(data[key].coolerHeight) >= coolerHeight) {
+                            // console.log("執行點7")
+                            $('#CASE').append('<option value="' + data[key].productId + '"imageUrl="' + data[key].imageUrl + '"price="' + data[key].price + '">' + data[key].productName + '</option>')
+                        } else if (data[key].size === "ATX" && parseFloat(data[key].gpuLength) >= gpuLength && parseFloat(data[key].coolerLength) >= coolerLength && parseFloat(data[key].coolerHeight) >= coolerHeight) {
+                            // console.log("執行點8")
+                            $('#CASE').append('<option value="' + data[key].productId + '"imageUrl="' + data[key].imageUrl + '"price="' + data[key].price + '">' + data[key].productName + '</option>')
+                        } else if (data[key].size === "m-ATX" && parseFloat(data[key].gpuLength) >= gpuLength && parseFloat(data[key].coolerLength) >= coolerLength && parseFloat(data[key].coolerHeight) >= coolerHeight) {
+                            // console.log("執行點9")
+                            $('#CASE').append('<option value="' + data[key].productId + '"imageUrl="' + data[key].imageUrl + '"price="' + data[key].price + '">' + data[key].productName + '</option>')
+                        } else if (data[key].size === "mini-iTX" && parseFloat(data[key].gpuLength) >= gpuLength && parseFloat(data[key].coolerLength) >= coolerLength && parseFloat(data[key].coolerHeight) >= coolerHeight) {
+                            // console.log("執行點10")
+                            $('#CASE').append('<option value="' + data[key].productId + '"imageUrl="' + data[key].imageUrl + '"price="' + data[key].price + '">' + data[key].productName + '</option>')
+                        }
+                    })
+                }else if (size === undefined){
+                    // console.log("林北沒定義size!")
+                    $.each(data, function (key, value) {
+                        if (parseFloat(data[key].gpuLength) >= gpuLength && parseFloat(data[key].coolerLength) >= coolerLength && parseFloat(data[key].coolerHeight) >= coolerHeight) {
+                            // console.log("執行點11")
+                            $('#CASE').append('<option value="' + data[key].productId + '"imageUrl="' + data[key].imageUrl + '"price="' + data[key].price + '">' + data[key].productName + '</option>')
+                        }
+                    })
+
+                }
+            },
+            error: function (data) {
+                console.log(data)
+                // alert("fail");
+            }
+        })
+    }
+
+    $('#CART').click(function () {
+
+        var selectAll = true
+
+        $('SELECT').each(function (){
+            if($(this).val() === null){
+                selectAll = false
+            }
+        })
+
+        if( selectAll && cartLength === 0 && userId !== undefined){
+            $.ajax({
+                url: '/users/' + userId + '/cart',
+                type: "post",
+                dataType: "text",
+                contentType : 'application/json',
+                data:JSON.stringify({
+                    buyItemList:[
+                        {
+                            productId:$('#CPU').val(),
+                            quantity:1
+                        },
+                        {
+                            productId:$('#MB').val(),
+                            quantity:1
+                        },
+                        {
+                            productId:$('#DRAM').val(),
+                            quantity:1
+                        },
+                        {
+                            productId:$('#GPU').val(),
+                            quantity:1
+                        },
+                        {
+                            productId:$('#STORAGE').val(),
+                            quantity:1
+                        },
+                        {
+                            productId:$('#COOLER').val(),
+                            quantity:1
+                        },
+                        {
+                            productId:$('#POWER').val(),
+                            quantity:1
+                        },
+                        {
+                            productId:$('#CASE').val(),
+                            quantity:1
+                        }
+                    ]
+                }),
+                success:function () {
+                    alert("已加進購物車")
+                    location.href =  "/member/member_cart.html";
+                },error:function () {
+                    alert("error")
+                }
+            })
+        } else if(userId === undefined){
+            alert("您還沒登入")
+        } else if(selectAll === false){
+            alert("請確保每個零件都已選擇")
+        } else if (cartLength !== 0) {
+            alert("請先清空購物車")
+        }
+    })
+</script>
+<!-- 姿加 -->
+<script>
+    var modal = document.getElementById("myModal");
+    var modalImg = document.getElementById("modalImg");
+
+    function openModal(imgId) {
+
+        modal.style.display = "block";
+        modalImg.src = document.getElementById(imgId).src;
+        console.log(document.getElementById(imgId).src);
+
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+</body>
+</html>

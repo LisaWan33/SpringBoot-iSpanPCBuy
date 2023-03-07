@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description">
+    <meta name="author">
+    <title>訂單管理 - 後台訂單管理</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="css/sb-admin.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin_order.css">
+    <link rel="stylesheet" href="css/order_style.css">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+  </head>
+
+  <style>
+    img{
+      width:100px;
+      height: 100px;
+    }
+    input {
+      margin: auto;
+      text-align: center;
+      border-radius: 20px;
+      width:25px
+    }
+    td,th,tr{
+
+      text-align: left;
+      font-family:'Times New Roman';
+      BORDER-style:none;
+      font-size: 20px;
+
+    }
+    .center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 50%;
+    }
+
+    #cartClear span{
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+      transition: 0.5s;
+    }
+    #order span {
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+      transition: 0.5s;
+    }
+    #cartClear span:after{
+      content: '↺';
+      position: absolute;
+      opacity: 0;
+      top: 0;
+      right: -15px;
+      transition: 0.5s;
+    }
+    #order span:after{
+      content: '➠';
+      position: absolute;
+      opacity: 0;
+      top: 0;
+      right: -15px;
+      transition: 0.5s;
+    }
+    #cartClear:hover span {
+      padding-right: 15px;
+    }
+    #order:hover span {
+      padding-right: 15px;
+    }
+    #cartClear:hover span:after {
+      opacity: 1;
+      right: 0;
+    }
+    #order:hover span:after {
+      opacity: 1;
+      right: 0;
+    }
+    .payBtn{
+      background-color : green;
+      border-radius: 20px;
+      color: whitesmoke;
+      border: none;
+    }
+    .cancelBtn{
+      background-color : red;
+      border-radius: 20px;
+      color: whitesmoke;
+      border: none;
+    }
+  </style>
+
+  <body>
+    <div id="wrapper">
+
+      <nav class="navbar navbar-inverse navbar-fixed-top" >
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="admin_index.html"><img src="../assets/images/logo2.png" style="width: 70px;height: 20px;position: relative"> 後台管理</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav side-nav">
+            <li><a href="admin_index.html"><i class="fa fa-home"></i> 首頁</a></li>
+            <li><a href="admin_member.html"><i class="fa fa-user-md"></i>  會員管理 </a></li>
+            <li><a href="admin_commodity.html"><i class="fa fa-wrench"></i>  商品管理 </a></li>
+            <li><a href="admin_order.html"  style="background-color: #e7e7e7; color:black;"><i class="fa fa-file-text"></i>  訂單管理 </a></li>
+            <li><a href="../index.html" style="position:fixed; bottom:20px; left:0;"><i class="fa fa-backward"></i> 返回官網 </a></li>
+            <li><a href="/member/member_index.html" style="position:fixed; bottom:70px; left:0;"><i class="fa fa-adjust"></i> 一般模式 </a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right navbar-user">
+            <li class="dropdown user-dropdown">
+              <a href="#"><i class="fa fa-users"></i> 管理員 </a>
+            <li class="divider"></li>
+            <li><a href="/logout"><i class="fa fa-power-off"></i> Log Out</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <dialog id="payModal">
+        <p> 確認訂單 </p>
+        <hr>
+        <form action="" method="post" id="pay-form" onsubmit="return paySubmit()">
+          <div>
+            <label for="name" class="pay-form">收件人姓名：</label>
+            <input disabled type="text" id="name" placeholder="" required maxlength="50"
+                   oninvalid="setCustomValidity('請輸入您的姓名');" onchange="setCustomValidity('');">
+
+            <label for="tel" class="pay-form">收件人電話：</label>
+            <input disabled type="text" id="tel" placeholder="" required maxlength="50"
+                   oninvalid="setCustomValidity('請輸入您的電話');" onchange="setCustomValidity('');">
+
+            <label for="addr" class="pay-form">收件人地址：</label>
+            <input disabled type="text" id="addr" placeholder="" required maxlength="50"
+                   oninvalid="setCustomValidity('請輸入您的地址');" onchange="setCustomValidity('');">
+
+            <label for="totalAmount" class="pay-form">訂單總金額：</label>
+            <input disabled type="text" id="totalAmount" placeholder="" required maxlength="50" disabled="disabled">
+            <br><br>
+            <label class="assembling-form">是否組裝：
+              <br><br>
+              <input disabled type="radio" name="assemblingMethod" value="需組裝">需組裝
+              <input disabled type="radio" name="assemblingMethod" value="不組裝">不組裝
+              <br><br>
+            </label>
+
+            <label class="pay-form">付款方式：
+              <br><br>
+              <label class="pay-form"><input disabled type="radio" name="payMethod" value="現金" checked>貨到付款</label>
+              <label class="pay-form"><input disabled="disabled" type="radio" name="payMethod" value="免單">銀行轉帳</label>
+              <label class="pay-form"><input disabled="disabled" type="radio" name="payMethod" value="免單">線上付款</label>
+              <br><br>
+            </label>
+            <div style="text-align:center;">
+              <input type="submit" id="pay-send" value="送出">
+              <input type="button" id="pay-close" value="關閉">
+            </div>
+          </div>
+        </form>
+      </dialog>
+      <dialog id="DoubleCheck" style="height: 300px">
+        <p style="font-size: x-large">真的要取消嗎？</p>
+        <hr>
+        <img src="https://i.giphy.com/media/JsVlBMEaHdOEGQKLXB/giphy.webp" class="center" style=" width: 180px; height: 180px">
+        <form action="" method="post" id="double-check-form">
+          <div style="text-align:center;">
+            <input type="button" id="no-send" value="不要取消">
+            <input type="button" id="ok-send" value="堅決取消">
+          </div>
+        </form>
+      </dialog>
+
+        <div id="page-wrapper">
+                  <div class="col-lg-12">
+                        <h1>查詢訂單</h1>
+                        <ol class="breadcrumb">
+                          <li><a href="admin_index.html"><i class="fa fa-home"></i> 首頁 </a></li>
+                          <li class="active">訂單管理 </li>
+                        </ol>
+                  </div>
+            <div class="out" id="allOrder"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.js"></script>
+  </body>
+  <script type="text/javascript">
+    var userId, username, name, tel, addr
+    var orderUserId, orderName, orderTel, orderAddr
+    var selectOrderId
+    var totalAmount
+    let payModal = document.querySelector("#payModal")
+    let checkModal = document.querySelector("#DoubleCheck")
+    var nowState = "hide"
+    $(document).ready(function () {
+      $.ajax({
+        url: '/users/current',
+        type: "get",
+        dataType: "json",
+        success: function (userinfo) {
+          if(userinfo.auth.includes('admin')){$('#promodel').show()}
+          userId = userinfo.userId
+          username = userinfo.username
+          name = userinfo.name
+          tel = userinfo.tel
+          addr = userinfo.addr
+          $('#loginName').append(' ' + name)
+          $.ajax({
+            url: '/admin/' + userId + '/orders',
+            type: "get",
+            dataType: "json",
+            success: function (orders) {
+              console.log(orders)
+              $.each(orders, function (key, value) {
+                if(orders[key].state === "尚未結帳") {
+                  $('#allOrder').after('<div class="out"><table class="table" id=' + key + '><tr><th colspan="4" style="vertical-align:middle"><input id='+ orders[key].orderId +' type="button" class="toggleBtn" value=' + '𓁺' + '> 訂單編號：' + orders[key].orderId + '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'+ new Date(orders[key].createdDate
+                  ).toLocaleDateString()  +'&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp金額：NT$ '+ orders[key].totalAmount.toLocaleString('zh-TW') +' 元 （' + orders[key].state +'）        <button class="cancelBtn" value=' + orders[key].orderId + '>取消<input hidden name='+ orders[key].totalAmount.toLocaleString('zh-TW') +' value=' + orders[key].totalAmount.toLocaleString('zh-TW') +'></th><th></th><th</th><th></th></tr></table></div>')
+
+                } else if(orders[key].state === "準備出貨"){
+                  $('#allOrder').after('<div class="out"><table class="table" id=' + key + '><tr><th colspan="4" style="vertical-align:middle"><input id='+ orders[key].orderId +' type="button" class="toggleBtn" value=' + '𓁺' + '> 訂單編號：' + orders[key].orderId + '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'+ new Date(orders[key].createdDate
+                  ).toLocaleDateString()  +'&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp金額：NT$ '+ orders[key].totalAmount.toLocaleString('zh-TW') +' 元 （' + orders[key].state +'）        <button class="payBtn" value=' + orders[key].orderId + '>出貨<button class="cancelBtn" value=' + orders[key].orderId + '>取消<input hidden name='+ orders[key].totalAmount.toLocaleString('zh-TW') +' value=' + orders[key].totalAmount.toLocaleString('zh-TW') +'></th><th></th><th</th><th></th></tr></table></div>')
+                } else {
+                  $('#allOrder').after('<div class="out"><table class="table" id=' + key + '><tr><th colspan="4" style="vertical-align:middle"><input id='+ orders[key].orderId +' type="button" class="toggleBtn" value=' + '𓁺' + '> 訂單編號：' + orders[key].orderId + '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'+ new Date(orders[key].createdDate
+                  ).toLocaleDateString()  +'&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp金額：NT$ '+ orders[key].totalAmount.toLocaleString('zh-TW') +' 元 （' + orders[key].state +'）<input hidden name='+ orders[key].totalAmount.toLocaleString('zh-TW') +' value=' + orders[key].totalAmount.toLocaleString('zh-TW') +'></th><th></th><th</th><th></th></tr></table></div>')
+                }
+                $.each(orders[key].orderItemList, function (itemKey, value){
+                  $('#'+ key).append('<tr hidden class='+ key +'><td><img src='+ orders[key].orderItemList[itemKey].imageUrl +'/></td><td style="vertical-align:middle">' + orders[key].orderItemList[itemKey].productName + '</td><td  style="vertical-align:middle">' + 'NT$ '+ orders[key].orderItemList[itemKey].amount.toLocaleString('zh-TW') + '元</td><td style="vertical-align:middle">數量' + orders[key].orderItemList[itemKey].quantity + '</td></tr>')
+                })
+              })
+            }
+          })
+        }
+      })
+    })
+    $(document).on("click", ".toggleBtn",function () {
+      var selectedId = $(this).closest('table').attr('id')
+      var orderId = $(this).attr('id')
+      console.log("selectedId="+selectedId)
+      console.log("orderId="+orderId)
+      $('.'+selectedId).toggle(300)
+    })
+
+    $('#allToggle').click(function () {
+      // $('tr[class]').toggle(300)
+      if(nowState === "hide"){
+        $('tr[class]').show()
+        nowState = "show"
+      }else {
+        $('tr[class]').hide()
+        nowState = "hide"
+      }
+    })
+
+    $(document).on("click", ".payBtn",function () {
+      selectOrderId = $(this).val()
+      // console.log("現在訂單ID=" + selectOrderId)
+
+      $.ajax({
+        url: '/users/' + selectOrderId + '/orderinfo',
+        type: "get",
+        dataType: "json",
+        success: function (orderinfo) {
+          $('#name').val(orderinfo.name)
+          $('#tel').val(orderinfo.tel)
+          $('#addr').val(orderinfo.addr)
+          if (orderinfo.assemble === "不組裝")
+          $('input[name=assemblingMethod][value="不組裝"]').attr('checked',true)
+          else {
+            $('input[name=assemblingMethod][value="需組裝"]').attr('checked',true)
+          }
+          // $('input[name=assemble]:checked').val(orderinfo.assemble)
+        }
+      })
+      //用orderId去獲取使用者資料
+      totalAmount = $(this).closest('table').find('input[name]').val()
+      $('#totalAmount').val("NT$ " + totalAmount + "元")
+      payModal.showModal()
+
+    })
+
+    $('#pay-close').click(function () {
+      payModal.close()
+    })
+
+    $(document).on("click", ".cancelBtn",function () {
+      selectOrderId = $(this).val()
+      checkModal.showModal()
+      $('#ok-send').click(function () {
+        $.ajax({
+          url: '/users/'+ userId +'/orders',
+          type: "put",
+          dataType: "text",
+          contentType : 'application/json',
+          data:JSON.stringify({
+            orderId : selectOrderId,
+            state:"訂單取消"
+          }),
+          success: function (){
+            alert("已取消訂單")
+            location.reload()
+            checkModal.close()
+          },error:function (data){
+            alert("error=" + data)
+          }
+        })
+      })
+    })
+    $('#no-send').click(function () {
+      checkModal.close()
+    })
+
+    function paySubmit(){
+      console.log('userId='+userId)
+      console.log('selectOrderId='+selectOrderId)
+      $.ajax({
+        url: '/users/'+ userId +'/orders',
+        type: "put",
+        dataType: "text",
+        contentType : 'application/json',
+        data:JSON.stringify({
+          orderId : selectOrderId,
+          state:"出貨完成"
+        }),
+        success: function (){
+          console.log("success")
+          alert("已完成出貨")
+          payModal.close()
+          location.reload()
+        },error:function (data){
+          alert("error=" + data)
+        }
+      })
+      return false
+    }
+
+  </script>
+</html>

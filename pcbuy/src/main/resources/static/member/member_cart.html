@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description">
+    <meta name="author">
+
+     <title>購物車-會員頁面</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="css/sb-admin.css" rel="stylesheet">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+    <!-- Page Specific CSS -->
+    <link rel="stylesheet" href="css/cart.css">
+</head>
+
+<style>
+    img{
+        width:100px;
+        height: 100px;
+    }
+    input {
+        margin: auto;
+        text-align: center;
+        border-radius: 30px;
+        width:35px
+    }
+    #cartTable td,th,tr{
+        vertical-align:middle;
+        text-align: center;
+        font-family:'Times New Roman';
+        BORDER-style:none;
+    }
+    #cart tr,td{
+        /*height: 45px;*/
+        font-size: 20px;
+    }
+
+    #cartClear span{
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+    }
+    #order span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+    }
+    #cartClear span:after{
+        content: '↺';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -15px;
+        transition: 0.5s;
+    }
+    #order span:after{
+        content: '➠';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -15px;
+        transition: 0.5s;
+    }
+    #cartClear:hover span {
+        padding-right: 15px;
+    }
+    #order:hover span {
+        padding-right: 15px;
+    }
+    #cartClear:hover span:after {
+        opacity: 1;
+        right: 0;
+    }
+    #order:hover span:after {
+        opacity: 1;
+        right: 0;
+    }
+
+</style>
+
+<body>
+
+<div id="wrapper">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="member_index.html"><img src="../assets/images/PCBUY_logo.png" style="width: 60px;height: 17px;position: relative">&nbsp;會員中心</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav side-nav">
+                <li><a href="member_index.html"><i class="fa fa-home"></i> 首頁 </a></li>
+                <li><a href="member_cart.html"  style="background-color: #ebc59c; color:black;"><i class="fa fa-shopping-cart"></i>  購物車 </a></li>
+                <li><a href="member_order.html"><i class="fa fa-file-text-o"></i>  我的訂單 </a></li>
+                <li><a href="member_info.html"><i class="fa fa-user"></i>  會員資訊 </a></li>
+<!--                <img src="../assets/categoryImages/case/ROG%20Hyperion%20GR701.png">-->
+                <li><a href="../index.html" style="position:fixed; bottom:20px; left:0;"><i class="fa fa-backward"></i> 返回官網 </a></li>
+                <li id="promodel" style="display: none"><a href="/admin/admin_index.html" style="position:fixed; bottom:70px; left:0;"><i class="fa fa-star"></i> 進階模式 </a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right navbar-user">
+                <li class="dropdown user-dropdown">
+                    <a href="" id="loginName"><i class="fa fa-users"></i></a>                <li class="divider"></li>
+                <li><a href="/logout"><i class="fa fa-power-off"></i> Log Out </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>購物車</h1>
+                <ol class="breadcrumb">
+                    <li><a href="member_index.html"><i class="fa fa-home"></i> 首頁 </a></li>
+                    <li class="active"> 購物車 </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="out">
+                <table class="table" id="cartTable">
+                        <tr>
+                            <th>圖片</th>
+                            <th>名稱</th>
+                            <th>價格</th>
+                            <th>數量</th>
+                        </tr>
+                    <tbody id="cart">
+
+
+                    </tbody>
+
+                    <tr class="total">
+                        <td style="background-color: #ebc59c"></td>
+                        <td style="background-color: #ebc59c"></td>
+                        <td style="background-color: #ebc59c"></td>
+                        <td style="background-color: #ebc59c"></td>
+                    </tr>
+
+                    <tr >
+                        <td></td>
+                        <td style="font-style: inherit;font-size: xx-large;text-align: left" id="price"></td>
+                        <td style="text-align: right"><button class="button" style="background-color:#ec971f;width: 150px" id="cartClear" name="delete_cart" ><span>清空購物車</span></button></td>
+                        <td style="text-align: left"><button class="button" style="background-color:#4CAF50;width: 150px"  id="order" name="create_order"><span>送出訂單</span></button></td>
+                    </tr>
+                </table>
+           </div>
+         </div>
+    </div>
+</body>
+<!-- JavaScript -->
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+<script type="text/javascript">
+    jQuery.support.cors = true;
+    var userId
+    var username, name
+    var buyItemList = []
+    $(document).ready(function () {
+        $.ajax({
+            url: '/users/current',
+            type: "get",
+            dataType: "json",
+            success: function (userinfo) {
+                userId = userinfo.userId
+                username = userinfo.username
+                name = userinfo.name
+                if(userinfo.auth.includes('admin')){$('#promodel').show()}
+                $('#loginName').append(' ' + name)
+                $.ajax({
+                    url: '/users/' + userId +'/cart',
+                    type: "get",
+                    dataType: "json",
+                    success:function (cart){
+                        var totalPrice = 0
+                        $.each(cart, function (key, value) {
+                            $('#cart').append('<tr>')
+                            $('#cart').append('<td><img src=' + cart[key].imageUrl + '/></td>')
+                            $('#cart').append('<td>' + cart[key].productName + '</td>')
+                            $('#cart').append('<td> NT$ ' + cart[key].price.toLocaleString('zh-TW')  + ' 元</td>')
+                            $('#cart').append('<td><input value="1" disabled></td>')
+                            $('#cart').append('</tr>')
+                            totalPrice = totalPrice + cart[key].price
+
+                            let buyItem = {}
+                            buyItem.productId = cart[key].productId
+                            buyItem.quantity = 1
+                            buyItemList.push(buyItem)
+                        })
+                        $('#price').text("總計：NT$ " + totalPrice.toLocaleString('zh-TW') + " 元")
+                        console.log(buyItemList)
+                    },error:function (){
+
+                    }
+                })
+            }
+        })
+    })
+
+    function cartClear(){
+        if (buyItemList.length > 0){
+            $.ajax({
+                url: '/users/' + userId + '/cart',
+                type: "delete",
+                dataType: "text",
+                success:function (){
+                    alert("已清空購物車")
+                    // console.log("已清空購物車")
+                    location.reload()
+                }
+            })
+        }else {
+            alert("購物車已經是空的了！")
+        }
+
+    }
+
+    $('#cartClear').click(function () {
+        cartClear()
+    })
+    $('#order').click(function () {
+        if (buyItemList.length > 0){
+            $.ajax({
+                url: '/users/' + userId + '/orders',
+                type: "post",
+                dataType: "json",
+                contentType : 'application/json',
+                data:JSON.stringify({buyItemList}),
+                success:function (odrerData){
+                    console.log(odrerData)
+                    // cartClear()
+                    alert("成功創建訂單")
+                    location.href = "/member/member_order.html";
+                },error:function () {
+                    alert("創建訂單失敗")
+                }
+            })
+        }else {
+            alert("購物車是空的！")
+        }
+
+    })
+</script>
+
+
+</html>

@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" >
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="author">
+
+    <title>Forms - 後台管理</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link rel="stylesheet" href="css/sb-admin.css" >
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+</head>
+<style>
+    table{
+        margin: auto;
+        padding: 20px;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: large;
+    }
+    tr{
+        border: 1px solid #656464;
+    }
+    th{
+        border: 1px solid #3d3939;
+        padding: 10px 30px;
+        background-color: #3d3939;
+        color: #FFF;
+    }
+    td{
+        border: 1px solid #3d3939;
+        padding: 10px 30px;
+        background-color: #f8f1de;
+        color: #3d3939;
+    }
+
+    /*第一欄第一列：左上*/
+    tr:first-child th:first-child{
+        border-top-left-radius: 10px;
+    }
+    /*第一欄最後列：左下*/
+    tr:last-child td:first-child{
+        border-bottom-left-radius: 10px;
+    }
+    /*最後欄第一列：右上*/
+    tr:first-child th:last-child{
+        border-top-right-radius: 10px;
+    }
+    /*最後欄第一列：右下*/
+    tr:last-child td:last-child{
+        border-bottom-right-radius: 10px;
+    }
+</style>
+
+<body>
+
+<link rel="stylesheet" href="css/product_style.css">
+<div id="wrapper">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="admin_index.html"><img src="../assets/images/logo2.png" style="width: 70px;height: 20px;position: relative"> 後台管理</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav side-nav">
+                <li><a href="admin_index.html"><i class="fa fa-home"></i> 首頁 </a></li>
+                <li><a href="admin_member.html"><i class="fa fa-user-md"></i>  會員管理 </a></li>
+                <li><a href="admin_commodity.html" style="background-color: #e7e7e7; color:black;"><i class="fa fa-wrench"></i>  商品管理 </a></li>
+                <li><a href="admin_order.html"><i class="fa fa-file-text"></i>  訂單管理 </a></li>
+                <li><a href="../index.html" style="position:fixed; bottom:20px; left:0;"><i class="fa fa-backward"></i> 返回官網 </a></li>
+                <li><a href="/member/member_index.html" style="position:fixed; bottom:70px; left:0;"><i class="fa fa-adjust"></i> 一般模式 </a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right navbar-user">
+                <li class="dropdown user-dropdown">
+                    <a href=""><i class="fa fa-users"></i> 管理員 </a>
+                <li class="divider"></li>
+                <li><a href="/logout" id="logout"><i class="fa fa-power-off"></i> Log Out</a></li>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="page-wrapper">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>處理器</h1>
+                <ol class="breadcrumb">
+                    <li><a href="index.html"><i class="icon-dashboard"></i> 首頁</a></li>
+                    <li class="active" id="showproductname"></i> 商品管理 / CPU</li>
+                </ol>
+                <br>
+                <input type="button" value="新增資料" id="btn-create" style="background-color: #2a6496">
+                <input type="button" value="修改資料" id="btn-update" style="background-color: #1e7e34">
+                <input type="button" value="刪除資料" id="btn-delete" style="background-color: #ac2925" >
+                <select id = "categorySelect" onchange="onCategorySelect()" style="width:150px; background-color: #faf2cc ; font-style: oblique">
+                    <option value = 'CPU'>處理器</option>
+                    <option value = 'MB'>主機板</option>
+                    <option value = 'DRAM'>記憶體</option>
+                    <option value = 'GPU'>顯示卡</option>
+                    <option value = 'COOLER'>散熱器</option>
+                    <option value = 'STORAGE'>硬碟</option>
+                    <option value = 'CASE'>機殼</option>
+                    <option value = 'POWER'>電源供應器</option>
+                </select>
+                <br><br><br>
+                <table id="categoryTable" style="width: 100%" >
+                    <tr id="MyTh" >
+                        <th style="text-align: center">選取</th>
+                        <th style="text-align: left">編號</th>
+                        <th style="text-align: left">名稱</th>
+                        <th style="text-align: left">價格</th>
+                        <th style="text-align: left">庫存</th>
+                        <th style="text-align: left">上架狀態</th>
+                    </tr>
+                </table>
+
+            </div>
+        </div><!-- /.row -->
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
+
+<dialog id="infoModal">
+    <p id="createFormTitle"> 新增資料 </p>
+    <hr>
+    <form action="/productCreate" method="post" id="create-CATEGORY-form" onsubmit="return formCreateSubmit()">
+
+        <div>
+            <label for="productName-create" class="create-form" id="productName-create-label">名稱：</label>
+            <input type="text" id="productName-create" name="productName" placeholder="輸入商品名稱" required="required" maxlength="50"
+                   oninvalid="setCustomValidity('請輸入商品名稱，確定字數在50字以內');" onchange="setCustomValidity('');">
+
+            <label for="category-create" class="create-form" id="category-create-label">類別：</label>
+            <select id="category-create" name="category"  required="required" onchange="onCreateSelect()">
+                <option value="CPU">CPU</option>
+                <option value="MB">MB</option>
+                <option value="DRAM">DRAM</option>
+                <option value="GPU">GPU</option>
+                <option value="STORAGE">STORAGE</option>
+                <option value="POWER">POWER</option>
+                <option value="COOLER">COOLER</option>
+                <option value="CASE">CASE</option>
+            </select>
+
+            <label for="brand-create" class="create-form" id="brand-create-label">品牌：</label>
+            <input type="text" id="brand-create" name="brand" placeholder="輸入商品品牌" required="required" maxlength="50"
+                   oninvalid="setCustomValidity('請輸入品牌，確定字數在50字以內');" onchange="setCustomValidity('');">
+
+            <label for="series-create" class="create-form" id="series-create-label">系列：</label>
+            <input type="text" id="series-create" name="series" placeholder="輸入商品系列" required="required" maxlength="50"
+                   oninvalid="setCustomValidity('請輸入商品系列，確定字數在50字以內');" onchange="setCustomValidity('');">
+
+            <label for="gpuLength-create" class="create-form" id="gpuLength-create-label">顯示卡長度：</label>
+            <input type=number step=0.01 id="gpuLength-create" name="gpuLength" placeholder="輸入顯示卡長度" required="required" min="0.0"
+                   oninvalid="setCustomValidity('顯示卡長度值需大於等於');" onchange="setCustomValidity('');">
+
+            <label for="watt-create" class="create-form" id="watt-create-label">功耗：</label>
+            <input type="number" id="watt-create" name="watt" placeholder="輸入商品功耗" required="required" min="1" max="2000"
+                   oninvalid="setCustomValidity('功耗值必須大於0，小於等於2000');" onchange="setCustomValidity('');">
+
+            <label for="socket-create" class="create-form" id="socket-create-label">腳位：</label>
+            <input type="text" id="socket-create" name="socket" placeholder="輸入商品腳位" required="required" maxlength="10"
+                   oninvalid="setCustomValidity('請輸入商品腳位，確定字數為10字以內');" onchange="setCustomValidity('');">
+
+            <label for="score-create" class="create-form" id="score-create-label">分數：</label>
+            <input type="number" id="score-create" name="score" placeholder="輸入商品分數" required="required" min="1" max="100000"
+                   oninvalid="setCustomValidity('分數值必須大於0，小於100000');" onchange="setCustomValidity('');">
+
+            <label for="size-create" class="create-form" id="size-create-label">主機板尺寸：</label>
+            <select id="size-create" name="size" required="required">
+                <option value="E-ATX">E-ATX</option>
+                <option value="ATX">ATX</option>
+                <option value="m-ATX">m-ATX</option>
+                <option value="mini-iTX">mini-iTX</option>
+            </select>
+
+            <label for="coolerLength-create" class="create-form" id="coolerLength-create-label">散熱器長度：</label>
+            <input type=number step=0.01 id="coolerLength-create" name="coolerLength" placeholder="輸入散熱器長度" required="required" min="0.0"
+                   oninvalid="setCustomValidity('散熱器長度值需大於等於0');" onchange="setCustomValidity('');">
+
+            <label for="coolerHeight-create" class="create-form" id="coolerHeight-create-label">散熱器高度：</label>
+            <input type=number step=0.01 id="coolerHeight-create" name="coolerHeight" placeholder="輸入散熱器高度" required="required" min="0.0"
+                   oninvalid="setCustomValidity('散熱器高度值需大於等於0');" onchange="setCustomValidity('');">
+
+            <label for="capacity-create" id="capacity-create-label" class="create-form">容量：</label>
+            <input type="number" id="capacity-create" name="capacity" placeholder="輸入商品容量" required="required" min="1"
+                   oninvalid="setCustomValidity('容量值必須大於0，且為整數');" onchange="setCustomValidity('');">
+
+            <label for="state-create" class="create-form" id="state-create-label">上架狀態：</label>
+            <select id="state-create" name="state"  required="required">
+                <option value="true">true</option>
+                <option value="false">false</option>
+            </select>
+
+            <label for="description-create" id="description-create-label" class="create-form">描述：</label>
+            <input type="text" id="description-create" name="description" placeholder="輸入商品描述" maxlength="1000"
+                   oninvalid="setCustomValidity('描述最大字數為1000');" onchange="setCustomValidity('');">
+
+            <label for="imageUrl-create" class="create-form" id="imageUrl-create-label">照片連結：</label>
+            <input type="text" id="imageUrl-create" name="imageUrl" placeholder="輸入商品照片連結" required="required"
+                   oninvalid="setCustomValidity('請確定商品連結正確');" onchange="setCustomValidity('');">
+
+            <label for="stock-create" class="create-form" id="stock-create-label">庫存：</label>
+            <input type="number" id="stock-create" name="stock" placeholder="輸入商品庫存" required="required" min="0" max="100"
+                   oninvalid="setCustomValidity('庫存限制<=100');" onchange="setCustomValidity('');">
+
+            <label for="price-create" class="create-form" id="price-create-label">價格：</label>
+            <input type="number" id="price-create" name="price" placeholder="輸入商品價格" required="required" min="1" max="100000"
+                   oninvalid="setCustomValidity('價格必須>0');" onchange="setCustomValidity('');">
+
+            <div style="text-align:center;">
+                <input type="button" id="create-close" value="關閉">
+                <input type="submit" id="create-send" value="送出">
+            </div>
+        </div>
+    </form>
+</dialog>
+
+<dialog id="infoModal-update">
+    <p id="updateFormTitle"> 修改資料 </p>
+    <hr>
+    <form action="/productUpdate" method="post" id="update-CATEGORY-form"  onsubmit="return formUpdateSubmit()">
+
+        <div>
+            <label for="productName-update" class="update-form" id="productName-update-label">名稱：</label>
+            <input type="text" id="productName-update" name="productName" placeholder="輸入商品名稱" required="required" maxlength="50"
+                   oninvalid="setCustomValidity('請輸入商品名稱，確定字數在50字以內');" onchange="setCustomValidity('');">
+
+            <label for="category-update" class="update-form" id="category-update-label">類別：</label>
+            <select id="category-update" name="category"  required="required">
+                <option value="" id="category-update-value"></option>-->
+            </select>
+
+            <label for="brand-update" class="update-form" id="brand-update-label">品牌：</label>
+            <input type="text" id="brand-update" name="brand" placeholder="輸入商品品牌" required="required" maxlength="50"
+                   oninvalid="setCustomValidity('請輸入品牌，確定字數在50字以內');" onchange="setCustomValidity('');">
+
+            <label for="series-update" class="update-form" id="series-update-label">系列：</label>
+            <input type="text" id="series-update" name="series" placeholder="輸入商品系列" required="required" maxlength="50"
+                   oninvalid="setCustomValidity('請輸入商品系列，確定字數在50字以內');" onchange="setCustomValidity('');">
+
+            <label for="gpuLength-update" class="update-form" id="gpuLength-update-label">顯示卡長度：</label>
+            <input type=number step=0.01 id="gpuLength-update" name="gpuLength" placeholder="輸入顯示卡長度" required="required" min="0.0"
+                   oninvalid="setCustomValidity('顯示卡長度值需大於等於');" onchange="setCustomValidity('');">
+
+
+            <label for="watt-update" class="update-form" id="watt-update-label">功耗：</label>
+            <input type="number" id="watt-update" name="watt" placeholder="輸入商品功耗" required="required" min="1" max="2000"
+                   oninvalid="setCustomValidity('功耗值必須大於0，小於等於2000');" onchange="setCustomValidity('');">
+
+
+            <label for="socket-update" class="update-form" id="socket-update-label">腳位：</label>
+            <input type="text" id="socket-update" name="socket" placeholder="輸入商品腳位" required="required" maxlength="10"
+                   oninvalid="setCustomValidity('請輸入商品腳位，確定字數為10字以內');" onchange="setCustomValidity('');">
+
+
+            <label for="score-update" class="update-form" id="score-update-label">分數：</label>
+            <input type="number" id="score-update" name="score" placeholder="輸入商品分數" required="required" min="1" max="100000"
+                   oninvalid="setCustomValidity('分數值必須大於0，小於100000');" onchange="setCustomValidity('');">
+
+            <label for="size-update" class="update-form" id="size-update-label">主機板尺寸：</label>
+            <select id="size-update" name="size" required="required">
+                <option value="E-ATX">E-ATX</option>
+                <option value="ATX">ATX</option>
+                <option value="m-ATX">m-ATX</option>
+                <option value="mini-iTX">mini-iTX</option>
+            </select>
+
+            <label for="coolerLength-update" class="update-form" id="coolerLength-update-label">散熱器長度：</label>
+            <input type=number step=0.01 id="coolerLength-update" name="coolerLength" placeholder="輸入散熱器長度" required="required" min="0.0"
+                   oninvalid="setCustomValidity('散熱器長度值需大於等於0');" onchange="setCustomValidity('');">
+
+
+            <label for="coolerHeight-update" class="update-form" id="coolerHeight-update-label">散熱器高度：</label>
+            <input type=number step=0.01 id="coolerHeight-update" name="coolerHeight" placeholder="輸入散熱器高度" required="required" min="0.0"
+                   oninvalid="setCustomValidity('散熱器高度值需大於等於0');" onchange="setCustomValidity('');">
+
+            <label for="capacity-update" id="capacity-update-label" class="update-form">容量：</label>
+            <input type="number" id="capacity-update" name="capacity" placeholder="輸入商品容量" required="required" min="1"
+                   oninvalid="setCustomValidity('容量值必須大於0，且為整數');" onchange="setCustomValidity('');">
+
+            <label for="state-update" class="update-form" id="state-update-label">上架狀態：</label>
+            <select id="state-update" name="state"  required="required">
+                <option value="true">是</option>
+                <option value="false">否</option>
+            </select>
+
+            <label for="description-update" id="description-update-label" class="update-form">描述：</label>
+            <input type="text" id="description-update" name="description" placeholder="輸入商品描述" maxlength="1000"
+                   oninvalid="setCustomValidity('描述最大字數為1000');" onchange="setCustomValidity('');">
+
+            <label for="imageUrl-update" class="update-form" id="imageUrl-update-label">照片連結：</label>
+            <input type="URL" id="imageUrl-update" name="imageUrl" placeholder="輸入商品照片連結" required="required"
+                   oninvalid="setCustomValidity('請確定商品連結正確');" onchange="setCustomValidity('');">
+
+            <label for="stock-update" class="update-form" id="stock-update-label">庫存：</label>
+            <input type="number" id="stock-update" name="stock" placeholder="輸入商品庫存" required="required" min="0" max="100"
+                   oninvalid="setCustomValidity('庫存限制<=100');" onchange="setCustomValidity('');">
+
+            <label for="price-update" class="update-form" id="price-update-label">價格：</label>
+            <input type="number" id="price-update" name="price" placeholder="輸入商品價格" required="required" min="1" max="100000"
+                   oninvalid="setCustomValidity('價格必須>0');" onchange="setCustomValidity('');">
+
+            <label for="productId-update" class="update-form" id="productId-update-label"></label>
+            <input type="hidden" id="productId-update" name="productId" >
+
+            <div style="text-align:center;">
+                <input type="button" id="update-close" value="關閉">
+                <input type="submit" id="update-send" value="送出">
+            </div>
+        </div>
+    </form>
+</dialog>
+
+<dialog id="DoubleCheck" style="height: 100px">
+    <p>真的要刪除嗎？</p>
+    <hr>
+    <form action="" method="post" id="double-check-form">
+        <div style="text-align:center;">
+            <input type="button" id="no-send" value="取消">
+            <input type="button" id="ok-send" value="確定">
+        </div>
+    </form>
+</dialog>
+
+<script type="text/javascript">
+    jQuery.support.cors = true;
+    var categoryName = "CPU" //(第一次進入預設選取CPU)
+
+    //根據商品管理頁面下拉式列表的零組件->列出相對應的資料
+    function onCategorySelect() {
+        console.log("調用onCategorySelect()")
+        $('h1').text($('#categorySelect').find(':selected').text())
+        $('#showproductname').text("商品管理 / " + $('#categorySelect').find(':selected').val())
+        categoryName = $('#categorySelect').find(':selected').val()
+        $('td').remove().load()
+        $.ajax({
+            url: 'http://localhost:8080/products/' + categoryName +'/List',
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                var i=1
+                $.each(data, function (key, value) {
+                    // $('#CPU').append(`'<tr><td style="text-align: center"><input type="radio" value="` + data[key].productId + ' " + ></td></tr>"')
+                    $('#categoryTable').append('<tr><td style="text-align: center"><input type="radio" name="categoryRadio" value="' + data[key].productId + '""></td><td>' + i++ + '</td><td>' + data[key].productName + '</td><td>' + data[key].price + '</td><td>' + data[key].stock + '</td><td>' + data[key].state + '</td></tr>')
+                    console.log(data[key].productId)
+                })
+            },
+            error: function (data) {
+                alert("fail");
+            }
+        });
+    }
+
+    //頁面載入時預設選取CPU，因此列出CPU資料
+    $(document).ready(function() {
+        $.ajax({
+            url: 'http://localhost:8080/products/' + $('#categorySelect').find(':selected').val() +'/List',
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                loadForm($('#categorySelect').find(':selected').val())
+                var i=1
+                $.each(data, function (key, value) {
+                    $('#categoryTable').append('<tr><td style="text-align: center"><input type="radio" name="categoryRadio" value="' + data[key].productId + '""></td><td>' + i++ + '</td><td>' + data[key].productName + '</td><td>' + data[key].price + '</td><td>' + data[key].stock + '</td><td>' + data[key].state + '</td></tr>')
+                    console.log(data[key].productId)
+                })
+            },
+            error: function (data) {
+                alert("fail");
+            }
+        });
+    })
+
+    //點擊新增資料的按鈕時觸發Dialog的Form表單
+    let btn = document.querySelector("#btn-create")
+    let infoModal = document.querySelector("#infoModal")
+    let close = document.querySelector("#create-close")
+    btn.addEventListener("click", function () {
+        loadForm($('#categorySelect').find(':selected').val())
+        console.log("我想新增" + $('#categorySelect').find(':selected').val())
+        $('#create-CATEGORY-form').find("input[type=text], textarea").val("")
+        $('#create-CATEGORY-form').find("input[type=number], textarea").val("")
+        $('#create-CATEGORY-form').find("input[type=URL], textarea").val("")
+        infoModal.showModal()
+        //打開新增資料後，將下拉式選單的category值 set 到 form裡面的 category
+        $('#category-create').val($('#categorySelect').find(':selected').val())
+    })
+    close.addEventListener("click", function () {
+        infoModal.close()
+    })
+
+    //刪除資料時跳出再次確認的視窗
+    let checkModal = document.querySelector("#DoubleCheck")
+
+    //改寫新增資料時按下submit方法，使之不會跳轉頁面，並且刷新Table
+    function formCreateSubmit(){
+        $('#create-CATEGORY-form').ajaxSubmit(function () {
+            console.log("已新增")
+            infoModal.close()
+            CRUDreload($('#categorySelect').find(':selected').val())
+        })
+        return false
+    }
+
+    //改寫修改資料時按下submit方法，使之不會跳轉頁面，並且刷新Table
+    function formUpdateSubmit() {
+        $('#update-CATEGORY-form').ajaxSubmit(function () {
+            console.log("已更新")
+            infoModalUpdate.close()
+            CRUDreload($('#categorySelect').find(':selected').val())
+        })
+        return false
+    }
+
+    //刪除資料
+    $('#btn-delete').click(function (){
+        var selectedId = $("input[name='categoryRadio']:checked").val()
+        if (selectedId != undefined){
+            checkModal.showModal()
+            $('#ok-send').click(function () {
+                $.ajax({
+                    url: '/products/delete',
+                    type: "delete",
+                    dataType: "json",
+                    data:{
+                        productId : selectedId
+                    },
+                    success: function (data){
+                        console.log("delete->success")
+                        checkModal.close()
+                        CRUDreload($('#categorySelect').find(':selected').val())
+                    }
+                })
+            })
+        }else {
+            alert("請選取一筆資料")
+        }
+        $('#no-send').click(function () {
+            checkModal.close()
+        })
+    })
+
+    let infoModalUpdate = document.querySelector("#infoModal-update")
+
+    //按下修改資料時，到資料庫撈出該筆資料並且將值放進Form表單的input中
+    $('#btn-update').click(function () {
+        $('#update-CATEGORY-form').find("input[type=text], textarea").val("")
+        $('#update-CATEGORY-form').find("input[type=number], textarea").val("")
+        $('#update-CATEGORY-form').find("input[type=URL], textarea").val("")
+        $('#update-CATEGORY-form').find("select[id=state-update]").val("")
+        var selectedId = $("input[name='categoryRadio']:checked").val()
+        // alert("選到的ID=" + selectedId)
+        if (selectedId != undefined){
+            $.ajax({
+                url: '/products/'+selectedId,
+                type: "get",
+                dataType: "json",
+                success:function (data) {
+                    // CRUDreload(data.category)
+                    $('#productId-update').val(data.productId)
+                    // $('#productId-update').attr('value',data.productId)
+                    $('#productName-update').val(data.productName)
+                    // $('#productName-update').attr('value',data.productName)
+                    $('#category-update-value').attr('value',data.category).text(data.category)
+                    $('#brand-update').val(data.brand)
+                    $('#watt-update').val(data.watt)
+                    $('#socket-update').val(data.socket)
+                    $('#score-update').val(data.score)
+                    $('#size-update').val(data.size)
+                    $('#series-update').val(data.series)
+                    $('#coolerLength-update').val(data.coolerLength)
+                    $('#coolerHeight-update').val(data.coolerHeight)
+                    $('#gpuLength-update').val(data.gpuLength)
+                    $('#capacity-update').val(data.capacity)
+                    console.log("狀態"+data.state)
+                    document.getElementById('state-update').value = data.state
+                    // $('#state-update').val(data.state)
+                    $('#description-update').val(data.description)
+                    $('#imageUrl-update').val(data.imageUrl)
+                    $('#stock-update').val(data.stock)
+                    $('#price-update').val(data.price)
+                    // console.log(data)
+
+                    //用抓取回來的category去請求待會要呈現的Form該對應哪個category
+                    loadForm(data.category)
+                }
+            })
+            infoModalUpdate.showModal()
+        }else {
+            alert("請選取一筆資料")
+        }
+        //關閉修改資料的Form表單
+        $('#update-close').click(function (){
+            infoModalUpdate.close()
+        })
+    })
+
+    //這個是指Form表單裡面的category發生改變
+    // 這筆看起來很亂的$('#...')是該Form的category
+    function onCreateSelect(){
+        console.log("我想新增" + $('#category-create').find(':selected').val())
+        loadForm($('#category-create').find(':selected').val())
+    }
+
+    //藉由代入的category呈現不同對應的Form
+    function loadForm(category){
+        console.log("調用loadForm()方法 " + category)
+        if(category === "CPU"){
+            formForCPU()
+        }else if (category === "MB"){
+            formForMB()
+        }else if (category === "GPU"){
+            formForGPU()
+        }else if (category === "DRAM"){
+            formForDRAM()
+        }else if (category === "COOLER"){
+            formForCOOLER()
+        }else if (category === "CASE"){
+            formForCASE()
+        }else if (category === "POWER"){
+            formForPOWER()
+        }else if (category === "STORAGE"){
+            formForSTORAGE()
+        }
+    }
+
+    function formForCPU(){
+        $('input').show() //呼叫時讓所有隱藏的input顯示
+        $('input').attr('disabled', false) //呼叫時解除所有禁用的input
+        $('select').show()
+        $('select').attr('disabled', false)
+        $('.create-form').show() //呼叫時讓所有隱藏的label顯示
+        $('.update-form').show() //呼叫時讓所有隱藏的label顯示
+
+        $('#capacity-create-label').hide()
+        // $('#capacity-update').attr('type', 'hidden') //隱藏input方法1
+        $('#capacity-create').hide() //隱藏input方法2
+        $('#capacity-create').attr('disabled', true) //讓此input禁用
+        $('#capacity-update-label').hide()
+        $('#capacity-update').hide()
+        $('#capacity-update').attr('disabled', true)
+
+        $('#series-create-label').hide()
+        $('#series-create').hide()
+        $('#series-create').attr('disabled', true)
+        $('#series-update-label').hide()
+        $('#series-update').hide()
+        $('#series-update').attr('disabled', true)
+
+        $('#gpuLength-create-label').hide()
+        $('#gpuLength-create').hide()
+        $('#gpuLength-create').attr('disabled', true)
+        $('#gpuLength-update-label').hide()
+        $('#gpuLength-update').hide()
+        $('#gpuLength-update').attr('disabled', true)
+
+        $('#coolerHeight-create-label').hide()
+        $('#coolerHeight-create').hide()
+        $('#coolerHeight-create').attr('disabled', true)
+        $('#coolerHeight-update-label').hide()
+        $('#coolerHeight-update').hide()
+        $('#coolerHeight-update').attr('disabled', true)
+
+        $('#coolerLength-create-label').hide()
+        $('#coolerLength-create').hide()
+        $('#coolerLength-create').attr('disabled', true)
+        $('#coolerLength-update-label').hide()
+        $('#coolerLength-update').hide()
+        $('#coolerLength-update').attr('disabled', true)
+
+        $('#size-create-label').hide()
+        $('#size-create').hide() //select的隱藏不能用attr('type', 'hidden')
+        $('#size-create').attr('disabled', true)
+        $('#size-update-label').hide()
+        $('#size-update').hide()
+        $('#size-update').attr('disabled', true)
+
+    }
+
+    function formForMB(){
+        $('input').show() //呼叫時讓所有隱藏的input顯示
+        $('input').attr('disabled', false) //呼叫時解除所有禁用的input
+        $('select').show()
+        $('select').attr('disabled', false)
+        $('.create-form').show() //呼叫時讓所有隱藏的label顯示
+        $('.update-form').show() //呼叫時讓所有隱藏的label顯示
+
+        $('#capacity-create-label').hide()
+        $('#capacity-create').hide()
+        $('#capacity-create').attr('disabled', true)
+        $('#capacity-update-label').hide()
+        $('#capacity-update').hide()
+        $('#capacity-update').attr('disabled', true)
+
+        $('#gpuLength-create-label').hide()
+        $('#gpuLength-create').hide()
+        $('#gpuLength-create').attr('disabled', true)
+        $('#gpuLength-update-label').hide()
+        $('#gpuLength-update').hide()
+        $('#gpuLength-update').attr('disabled', true)
+
+        $('#coolerHeight-create-label').hide()
+        $('#coolerHeight-create').hide()
+        $('#coolerHeight-create').attr('disabled', true)
+        $('#coolerHeight-update-label').hide()
+        $('#coolerHeight-update').hide()
+        $('#coolerHeight-update').attr('disabled', true)
+
+        $('#coolerLength-create-label').hide()
+        $('#coolerLength-create').hide()
+        $('#coolerLength-create').attr('disabled', true)
+        $('#coolerLength-update-label').hide()
+        $('#coolerLength-update').hide()
+        $('#coolerLength-update').attr('disabled', true)
+
+        $('#score-create-label').hide()
+        $('#score-create').hide()
+        $('#score-create').attr('disabled', true)
+        $('#score-update-label').hide()
+        $('#score-update').hide()
+        $('#score-update').attr('disabled', true)
+
+    }
+
+    function formForGPU(){
+        $('input').show() //呼叫時讓所有隱藏的input顯示
+        $('input').attr('disabled', false) //呼叫時解除所有禁用的input
+        $('select').show()
+        $('select').attr('disabled', false)
+        $('.create-form').show() //呼叫時讓所有隱藏的label顯示
+        $('.update-form').show() //呼叫時讓所有隱藏的label顯示
+
+        $('#coolerHeight-create-label').hide()
+        $('#coolerHeight-create').hide()
+        $('#coolerHeight-create').attr('disabled', true)
+        $('#coolerHeight-update-label').hide()
+        $('#coolerHeight-update').hide()
+        $('#coolerHeight-update').attr('disabled', true)
+
+        $('#coolerLength-create-label').hide()
+        $('#coolerLength-create').hide()
+        $('#coolerLength-create').attr('disabled', true)
+        $('#coolerLength-update-label').hide()
+        $('#coolerLength-update').hide()
+        $('#coolerLength-update').attr('disabled', true)
+
+        $('#size-create-label').hide()
+        $('#size-create').hide()
+        $('#size-create').attr('disabled', true)
+        $('#size-update-label').hide()
+        $('#size-update').hide()
+        $('#size-update').attr('disabled', true)
+    }
+
+    function formForDRAM(){
+        $('input').show() //呼叫時讓所有隱藏的input顯示
+        $('input').attr('disabled', false) //呼叫時解除所有禁用的input
+        $('select').show()
+        $('select').attr('disabled', false)
+        $('.create-form').show() //呼叫時讓所有隱藏的label顯示
+        $('.update-form').show() //呼叫時讓所有隱藏的label顯示
+
+        $('#series-create-label').hide()
+        $('#series-create').hide()
+        $('#series-create').attr('disabled', true)
+        $('#series-update-label').hide()
+        $('#series-update').hide()
+        $('#series-update').attr('disabled', true)
+
+        $('#gpuLength-create-label').hide()
+        $('#gpuLength-create').hide()
+        $('#gpuLength-create').attr('disabled', true)
+        $('#gpuLength-update-label').hide()
+        $('#gpuLength-update').hide()
+        $('#gpuLength-update').attr('disabled', true)
+
+        $('#coolerHeight-create-label').hide()
+        $('#coolerHeight-create').hide()
+        $('#coolerHeight-create').attr('disabled', true)
+        $('#coolerHeight-update-label').hide()
+        $('#coolerHeight-update').hide()
+        $('#coolerHeight-update').attr('disabled', true)
+
+        $('#coolerLength-create-label').hide()
+        $('#coolerLength-create').hide()
+        $('#coolerLength-create').attr('disabled', true)
+        $('#coolerLength-update-label').hide()
+        $('#coolerLength-update').hide()
+        $('#coolerLength-update').attr('disabled', true)
+
+        $('#watt-create-label').hide()
+        $('#watt-create').hide()
+        $('#watt-create').attr('disabled', true)
+        $('#watt-update-label').hide()
+        $('#watt-update').hide()
+        $('#watt-update').attr('disabled', true)
+
+        $('#score-create-label').hide()
+        $('#score-create').hide()
+        $('#score-create').attr('disabled', true)
+        $('#score-update-label').hide()
+        $('#score-update').hide()
+        $('#score-update').attr('disabled', true)
+
+        $('#size-create-label').hide()
+        $('#size-create').hide()
+        $('#size-create').attr('disabled', true)
+        $('#size-update-label').hide()
+        $('#size-update').hide()
+        $('#size-update').attr('disabled', true)
+    }
+
+    function formForCOOLER(){
+        $('input').show() //呼叫時讓所有隱藏的input顯示
+        $('input').attr('disabled', false) //呼叫時解除所有禁用的input
+        $('select').show()
+        $('select').attr('disabled', false)
+        $('.create-form').show() //呼叫時讓所有隱藏的label顯示
+        $('.update-form').show() //呼叫時讓所有隱藏的label顯示
+
+        $('#capacity-create-label').hide()
+        $('#capacity-create').hide()
+        $('#capacity-create').attr('disabled', true)
+        $('#capacity-update-label').hide()
+        $('#capacity-update').hide()
+        $('#capacity-update').attr('disabled', true)
+
+        $('#gpuLength-create-label').hide()
+        $('#gpuLength-create').hide()
+        $('#gpuLength-create').attr('disabled', true)
+        $('#gpuLength-update-label').hide()
+        $('#gpuLength-update').hide()
+        $('#gpuLength-update').attr('disabled', true)
+
+        $('#socket-create-label').hide()
+        $('#socket-create').hide()
+        $('#socket-create').attr('disabled', true)
+        $('#socket-update-label').hide()
+        $('#socket-update').hide()
+        $('#socket-update').attr('disabled', true)
+
+        $('#score-create-label').hide()
+        $('#score-create').hide()
+        $('#score-create').attr('disabled', true)
+        $('#score-update-label').hide()
+        $('#score-update').hide()
+        $('#score-update').attr('disabled', true)
+
+        $('#size-create-label').hide()
+        $('#size-create').hide()
+        $('#size-create').attr('disabled', true)
+        $('#size-update-label').hide()
+        $('#size-update').hide()
+        $('#size-update').attr('disabled', true)
+    }
+
+    function formForCASE(){
+        $('input').show() //呼叫時讓所有隱藏的input顯示
+        $('input').attr('disabled', false) //呼叫時解除所有禁用的input
+        $('select').show()
+        $('select').attr('disabled', false)
+        $('.create-form').show() //呼叫時讓所有隱藏的label顯示
+        $('.update-form').show() //呼叫時讓所有隱藏的label顯示
+
+        $('#capacity-create-label').hide()
+        $('#capacity-create').hide()
+        $('#capacity-create').attr('disabled', true)
+        $('#capacity-update-label').hide()
+        $('#capacity-update').hide()
+        $('#capacity-update').attr('disabled', true)
+
+        $('#series-create-label').hide()
+        $('#series-create').hide()
+        $('#series-create').attr('disabled', true)
+        $('#series-update-label').hide()
+        $('#series-update').hide()
+        $('#series-update').attr('disabled', true)
+
+        $('#watt-create-label').hide()
+        $('#watt-create').hide()
+        $('#watt-create').attr('disabled', true)
+        $('#watt-update-label').hide()
+        $('#watt-update').hide()
+        $('#watt-update').attr('disabled', true)
+
+        $('#socket-create-label').hide()
+        $('#socket-create').hide()
+        $('#socket-create').attr('disabled', true)
+        $('#socket-update-label').hide()
+        $('#socket-update').hide()
+        $('#socket-update').attr('disabled', true)
+
+        $('#score-create-label').hide()
+        $('#score-create').hide()
+        $('#score-create').attr('disabled', true)
+        $('#score-update-label').hide()
+        $('#score-update').hide()
+        $('#score-update').attr('disabled', true)
+    }
+
+    function formForPOWER(){
+        $('input').show() //呼叫時讓所有隱藏的input顯示
+        $('input').attr('disabled', false) //呼叫時解除所有禁用的input
+        $('select').show()
+        $('select').attr('disabled', false)
+        $('.create-form').show() //呼叫時讓所有隱藏的label顯示
+        $('.update-form').show() //呼叫時讓所有隱藏的label顯示
+
+        $('#capacity-create-label').hide()
+        $('#capacity-create').hide()
+        $('#capacity-create').attr('disabled', true)
+        $('#capacity-update-label').hide()
+        $('#capacity-update').hide()
+        $('#capacity-update').attr('disabled', true)
+
+        $('#gpuLength-create-label').hide()
+        $('#gpuLength-create').hide()
+        $('#gpuLength-create').attr('disabled', true)
+        $('#gpuLength-update-label').hide()
+        $('#gpuLength-update').hide()
+        $('#gpuLength-update').attr('disabled', true)
+
+        $('#coolerHeight-create-label').hide()
+        $('#coolerHeight-create').hide()
+        $('#coolerHeight-create').attr('disabled', true)
+        $('#coolerHeight-update-label').hide()
+        $('#coolerHeight-update').hide()
+        $('#coolerHeight-update').attr('disabled', true)
+
+        $('#coolerLength-create-label').hide()
+        $('#coolerLength-create').hide()
+        $('#coolerLength-create').attr('disabled', true)
+        $('#coolerLength-update-label').hide()
+        $('#coolerLength-update').hide()
+        $('#coolerLength-update').attr('disabled', true)
+
+        $('#socket-create-label').hide()
+        $('#socket-create').hide()
+        $('#socket-create').attr('disabled', true)
+        $('#socket-update-label').hide()
+        $('#socket-update').hide()
+        $('#socket-update').attr('disabled', true)
+
+        $('#score-create-label').hide()
+        $('#score-create').hide()
+        $('#score-create').attr('disabled', true)
+        $('#score-update-label').hide()
+        $('#score-update').hide()
+        $('#score-update').attr('disabled', true)
+    }
+
+    function formForSTORAGE(){
+        $('input').show() //呼叫時讓所有隱藏的input顯示
+        $('input').attr('disabled', false) //呼叫時解除所有禁用的input
+        $('select').show()
+        $('select').attr('disabled', false)
+        $('.create-form').show() //呼叫時讓所有隱藏的label顯示
+        $('.update-form').show() //呼叫時讓所有隱藏的label顯示
+
+        $('#gpuLength-create-label').hide()
+        $('#gpuLength-create').hide()
+        $('#gpuLength-create').attr('disabled', true)
+        $('#gpuLength-update-label').hide()
+        $('#gpuLength-update').hide()
+        $('#gpuLength-update').attr('disabled', true)
+
+        $('#coolerHeight-create-label').hide()
+        $('#coolerHeight-create').hide()
+        $('#coolerHeight-create').attr('disabled', true)
+        $('#coolerHeight-update-label').hide()
+        $('#coolerHeight-update').hide()
+        $('#coolerHeight-update').attr('disabled', true)
+
+        $('#coolerLength-create-label').hide()
+        $('#coolerLength-create').hide()
+        $('#coolerLength-create').attr('disabled', true)
+        $('#coolerLength-update-label').hide()
+        $('#coolerLength-update').hide()
+        $('#coolerLength-update').attr('disabled', true)
+
+        $('#score-create-label').hide()
+        $('#score-create').hide()
+        $('#score-create').attr('disabled', true)
+        $('#score-update-label').hide()
+        $('#score-update').hide()
+        $('#score-update').attr('disabled', true)
+
+        $('#size-create-label').hide()
+        $('#size-create').hide()
+        $('#size-create').attr('disabled', true)
+        $('#size-update-label').hide()
+        $('#size-update').hide()
+        $('#size-update').attr('disabled', true)
+    }
+
+    function formForAll(){
+        $('input').show() //呼叫時讓所有隱藏的input顯示
+        $('input').attr('disabled', false) //呼叫時解除所有禁用的input
+        $('select').show()
+        $('select').attr('disabled', false)
+        $('.create-form').show() //呼叫時讓所有隱藏的label顯示
+        $('.update-form').show() //呼叫時讓所有隱藏的label顯示
+
+        $('#capacity-create-label').hide()
+        $('#capacity-create').hide()
+        $('#capacity-create').attr('disabled', true)
+        $('#capacity-update-label').hide()
+        $('#capacity-update').hide()
+        $('#capacity-update').attr('disabled', true)
+
+        $('#series-create-label').hide()
+        $('#series-create').hide()
+        $('#series-create').attr('disabled', true)
+        $('#series-update-label').hide()
+        $('#series-update').hide()
+        $('#series-update').attr('disabled', true)
+
+        $('#gpuLength-create-label').hide()
+        $('#gpuLength-create').hide()
+        $('#gpuLength-create').attr('disabled', true)
+        $('#gpuLength-update-label').hide()
+        $('#gpuLength-update').hide()
+        $('#gpuLength-update').attr('disabled', true)
+
+        $('#coolerHeight-create-label').hide()
+        $('#coolerHeight-create').hide()
+        $('#coolerHeight-create').attr('disabled', true)
+        $('#coolerHeight-update-label').hide()
+        $('#coolerHeight-update').hide()
+        $('#coolerHeight-update').attr('disabled', true)
+
+        $('#coolerLength-create-label').hide()
+        $('#coolerLength-create').hide()
+        $('#coolerLength-create').attr('disabled', true)
+        $('#coolerLength-update-label').hide()
+        $('#coolerLength-update').hide()
+        $('#coolerLength-update').attr('disabled', true)
+
+        $('#watt-create-label').hide()
+        $('#watt-create').hide()
+        $('#watt-create').attr('disabled', true)
+        $('#watt-update-label').hide()
+        $('#watt-update').hide()
+        $('#watt-update').attr('disabled', true)
+
+        $('#socket-create-label').hide()
+        $('#socket-create').hide()
+        $('#socket-create').attr('disabled', true)
+        $('#socket-update-label').hide()
+        $('#socket-update').hide()
+        $('#socket-update').attr('disabled', true)
+
+        $('#score-create-label').hide()
+        $('#score-create').hide()
+        $('#score-create').attr('disabled', true)
+        $('#score-update-label').hide()
+        $('#score-update').hide()
+        $('#score-update').attr('disabled', true)
+
+        $('#size-create-label').hide()
+        $('#size-create').hide()
+        $('#size-create').attr('disabled', true)
+        $('#size-update-label').hide()
+        $('#size-update').hide()
+        $('#size-update').attr('disabled', true)
+    }
+
+    //增刪修結束後停留在當前頁面並且刷新
+    function CRUDreload(category) {
+        console.log("目前代入CRURreload的值為"+$('#categorySelect').find(':selected').val())
+        $('td').remove().load()
+        console.log("td清除完畢")
+        $('#categorySelect').val(category)
+        $('h1').text($('#categorySelect').find(':selected').text())
+        $('#showproductname').text("商品管理 / " + $('#categorySelect').find(':selected').val())
+        $.ajax({
+            url: 'http://localhost:8080/products/' + category +'/List',
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                var i=1
+                $('td').remove().load()
+                $.each(data, function (key, value) {
+                    // $('#CPU').append(`'<tr><td style="text-align: center"><input type="radio" value="` + data[key].productId + ' " + ></td></tr>"')
+                    $('#categoryTable').append('<tr><td style="text-align: center"><input type="radio" name="categoryRadio" value="' + data[key].productId + '""></td><td>' + i++ + '</td><td>' + data[key].productName + '</td><td>' + data[key].price + '</td><td>' + data[key].stock + '</td><td>' + data[key].state + '</td></tr>')
+                    console.log(data[key].productId)
+                })
+            },
+            error: function (data) {
+                alert("fail");
+            }
+        });
+    }
+
+</script>
+
+</body>
+</html>

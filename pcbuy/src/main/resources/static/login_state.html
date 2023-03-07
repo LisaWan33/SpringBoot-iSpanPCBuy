@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入註冊</title>
+    <link rel="stylesheet" href="assets/css/font-awesome.css">
+</head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+
+<body>
+<link rel="stylesheet" href="./assets/css/login_register.css">
+<div class="shell">
+    <!--登入-->
+    <div class="container a-container" id="a-container">
+        <form class="form" id="a-form" action="/users/login" method="post">
+            <h2 class="form_title title">登入會員</h2>
+            <div class="form_icons"></div>
+            <input type="text" class="form_input" placeholder="帳號" name="username" required>
+            <input type="password" class="form_input" placeholder="密碼" name="password" required>
+            <p class="form_link"><input type="checkbox" name="remember-me"> 保持登入&nbsp;&nbsp;&nbsp;&nbsp;<a href="index.html" style="color: lightslategray;font-size: 15px;font-family: 'Times New Roman';">PCBUY官網&nbsp;<i class="fa fa-arrow-left"></i></a></p>
+            <input type="submit" class="login_form_submit" id="loginrule" value="SIGN IN">
+            <br><br>
+        </form>
+    </div>
+
+    <!--註冊-->
+    <div class="container b-container" id="b-container">
+        <form class="form" id="b-form" action="/users/register" method="post" onsubmit="return formRegisterSubmit()">
+            <h2 class="form_title title">註冊帳號</h2>
+            <div class="form_icons">
+                <div class="form-group">
+                    <label for="name" class="control-label">姓名：</label>
+                    <input type="text" class="form_input" id="name" name="name" placeholder="輸入姓名"
+                           minlength="2" maxlength="20"
+                           oninvalid="setCustomValidity('請輸入姓名，長度限制最少2字數，最多20字數內')" oninput="setCustomValidity('');" required>
+                </div>
+                <div class="form-group">
+                    <label for="tel" class="control-label">電話：</label>
+                    <input type="text" class="form_input" id="tel" name="tel" placeholder="輸入手機號碼(格式:09xxxxxxxx)"
+                           maxlength="10" pattern="[09]{2}[0-9]{8}"
+                           oninvalid="setCustomValidity('請輸入正確的手機號瑪格式:09xxxxxxxx')" oninput="setCustomValidity('');" required>
+                </div>
+                <div class="form-group">
+                    <label for="addr" class="control-label">地址：</label>
+                    <input type="text" class="form_input" id="addr" name="addr" placeholder="輸入地址"
+                           minlength="6" maxlength="200"
+                           oninvalid="setCustomValidity('請輸入地址，長度限制100字以內');" oninput="setCustomValidity('');" required>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="control-label">信箱：</label>
+                    <input type="email" class="form_input" id="email" name="email" placeholder="輸入電子郵件地址"
+                           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                           oninvalid="setCustomValidity('請輸入正確電子郵件格式');" oninput="setCustomValidity('');" required>
+                </div>
+                <div class="form-group">
+                    <label for="username" class="control-label">帳號：</label>
+                    <input type="text" class="form_input" id="username" name="username" placeholder="輸入帳號(最少7位數)"
+                           minlength="7" maxlength="20"
+                           oninvalid="setCustomValidity('請輸入帳號，長度限制最少7字，最多20字以內');"oninput="setCustomValidity('');" required>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="control-label">密碼：</label>
+                    <input type="password" class="form_input" id="password" name="password" placeholder="輸入密碼(需含英數至少六個字元)"
+                           pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{6,}$"
+                           oninvalid="setCustomValidity('請輸入正確的密碼格式:含英數至少六個字元，注意不得有特殊字元');"oninput="setCustomValidity('');" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="control-label">密碼確認：</label>
+                    <input type="password" class="form_input" id="password_confirm" name="password" placeholder="輸入確認密碼"
+                           pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{6,}$"
+                           oninvalid="setCustomValidity('請確定是否有輸入錯誤');" oninput="setCustomValidity('');" required>
+                </div>
+            </div>
+            <input type="submit" class="register_form_submit" id="signrule" value="SIGN UP"></input>
+        </form>
+    </div>
+
+    <div class="switch" id="switch-cnt">
+        <div class="switch_circle"></div>
+        <div class="switch_circle switch_circle-t"></div>
+        <div class="switch_container" id="switch-c1">
+            <button class="switch_button button switch-btn">SIGN UP</button>
+        </div>
+        <div class="switch_container is-hidden" id="switch-c2">
+            <button class="switch_button button switch-btn">SIGN IN</button>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
+<script>
+    let switchCtn = document.querySelector("#switch-cnt");
+    let switchC1 = document.querySelector("#switch-c1");
+    let switchC2 = document.querySelector("#switch-c2");
+    let switchCircle = document.querySelectorAll(".switch_circle");
+    let switchBtn = document.querySelectorAll(".switch-btn");
+    let aContainer = document.querySelector("#a-container");
+    let bContainer = document.querySelector("#b-container");
+    let allButtons = document.querySelectorAll(".submit");
+
+    let getButtons = (e) => e.preventDefault()
+    let changeForm = (e) => {
+        // 修改類
+        switchCtn.classList.add("is-gx");
+        setTimeout(function () {
+            switchCtn.classList.remove("is-gx");
+        }, 1500)
+        switchCtn.classList.toggle("is-txr");
+        switchCircle[1].classList.toggle("is-txr");
+        switchCircle[0].classList.toggle("is-txr");
+
+        switchC1.classList.toggle("is-hidden");
+        switchC2.classList.toggle("is-hidden");
+        aContainer.classList.toggle("is-txl");
+        bContainer.classList.toggle("is-txl");
+        bContainer.classList.toggle("is-z");
+    }
+    // 點擊切換
+    let shell = (e) => {
+        for (var i = 0; i < allButtons.length; i++)
+            allButtons[i].addEventListener("click", getButtons);
+        for (var i = 0; i < switchBtn.length; i++)
+            switchBtn[i].addEventListener("click", changeForm)
+    }
+    window.addEventListener("load", shell);
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        $.ajax({
+            url: '/users/current',
+            type: "get",
+            dataType: "json",
+            success:function (userinfo){
+                alert("歡迎回來！ " + userinfo.name)
+                location.href = "index.html"
+            },error:function () {
+                alert("帳號或密碼有誤！請再試一次")
+                location.href = "login_register.html"
+            }
+        })
+    })
+
+    // function formRegisterSubmit() {
+    //     var x = true
+    //     $('#b-form input').each(function (){
+    //         if($(this).val() === ""){
+    //             x = false
+    //         }
+    //     })
+    //     if (!x){
+    //         alert("有東西還沒填")
+    //     }
+    //     else if ( $('#password_confirm').val()!==$('#password').val()){
+    //         x = false
+    //         alert("密碼不相符，請再次確認")
+    //     }
+    //     if(x){
+    //         $.ajax({
+    //             type: 'post',
+    //             url: '/users/register',
+    //             data: JSON.stringify({
+    //                 username:$('#username').val(),
+    //                 password:$('#password').val(),
+    //                 name:$('#name').val(),
+    //                 tel:$('#tel').val(),
+    //                 addr:$('#addr').val(),
+    //                 email:$('#email').val()
+    //             }),
+    //             contentType : 'application/json',
+    //             success: function(data) {
+    //                 console.log(data)
+    //                 alert("您已註冊成功，請登入!");
+    //                 location.href = "/index.html"
+    //             },
+    //             error:function(data){
+    //                 console.log(data)
+    //                 alert("該帳號已被註冊！")
+    //             }
+    //         });
+    //     }
+    //     return false
+    // }
+
+</script>
+
+</html>

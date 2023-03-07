@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description">
+    <meta name="author">
+    <title>首頁-會員頁面</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!-- Add custom CSS here -->
+    <link href="css/sb-admin.css" rel="stylesheet">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+  </head>
+  <!-- JavaScript -->
+  <script src="js/jquery-1.10.2.js"></script>
+  <script src="js/bootstrap.js"></script>
+
+  <body>
+
+    <div id="wrapper">
+        <nav class="navbar navbar-inverse navbar-fixed-top"  >
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="member_index.html"><img src="../assets/images/PCBUY_logo.png" style="width: 60px;height: 17px;position: relative">&nbsp;會員中心</a>
+            </div>
+
+            <div>
+                <ul class="nav navbar-nav side-nav">
+                    <li><a href="member_index.html" style="background-color: #ebc59c; color:black;" ><i class="fa fa-home"></i> 首頁 </a></li>
+                    <li><a href="member_cart.html"><i class="fa fa-shopping-cart"></i>  購物車 </a></li>
+                    <li><a href="member_order.html"><i class="fa fa-file-text-o"></i>  我的訂單 </a></li>
+                    <li><a href="member_info.html"><i class="fa fa-user"></i>  會員資訊 </a></li>
+                    <li><a href="../index.html" style="position:fixed; bottom:20px; left:0;"><i class="fa fa-backward"></i> 返回官網 </a></li>
+                    <li id="promodel" style="display: none"><a href="/admin/admin_index.html" style="position:fixed; bottom:70px; left:0;"><i class="fa fa-star"></i> 進階模式 </a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right navbar-user">
+                    <li>
+                        <a href="" id="loginName"><i class="fa fa-users"></i></a>
+                        <li></li>
+                        <li><a href="/logout"><i class="fa fa-power-off"></i> Log Out</a></li>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+      <div id="page-wrapper">
+            <div class="row">
+                  <div class="col-lg-12">
+                        <h1> 會員中心</h1>
+                          <ol class="breadcrumb">
+                              <li><i class="fa fa-home"></i> 首頁 </a></li>
+                          </ol>
+                        <div class="alert alert-success">
+                            <figcaption>
+                                <h3>提示訊息</h3>
+                                <p>PCBUY電腦商城會員您好!&nbsp;在這裡能讓您查看會員資訊、購物車、訂單購買紀錄，如有問題請詢問客服!</p>
+                                <p></p>
+                            </figcaption>
+                        </div>
+                  </div>
+            </div>
+
+        <h2>[公告]</h2>
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <div class="panel panel-default">
+              <div class="panel-body" style="background-color: snow">
+                  <h3>【防詐騙提醒】</h3>
+                  <hr>
+                  <h4>若近期有不法集團以常見密碼嘗試登入你的會員帳號，進行存取訂單等資料，並假借店鋪名義升等會員並以訂單有誤或帳款扣款等理由，</h4>
+                  <h4>指示您前往ATM或臨櫃、網路、銀行進行匯款時，請您務必提高警覺，切勿避免受到詐騙，且在這提醒您請定期更改密碼確保帳戶安全。</h4>
+              </div>
+            </div>            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+<script>
+    var userId, username, name, email, tel, addr
+    $(document).ready(function () {
+        $.ajax({
+            url: '/users/current',
+            type: "get",
+            dataType: "json",
+            success: function (userinfo) {
+                if(userinfo.auth.includes('admin')){$('#promodel').show()}
+                console.log(userinfo)
+                userId = userinfo.userId
+                username = userinfo.username
+                name = userinfo.name
+                email = userinfo.email
+                tel = userinfo.tel
+                addr = userinfo.addr
+                $('#loginName').append(' ' + name)
+            }
+        })
+
+    })
+</script>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description">
+    <meta name="author">
+
+    <title>會員資料-會員頁面</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="css/sb-admin.css" rel="stylesheet">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+  </head>
+
+  <body>
+  <link rel="stylesheet" href="css/memberinfo_style.css">
+  <div id="wrapper">
+      <!--        style="background-color:#eab0b0"-->
+      <nav class="navbar navbar-inverse navbar-fixed-top"  >
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="member_index.html"><img src="../assets/images/PCBUY_logo.png" style="width: 60px;height: 17px;position: relative">&nbsp;會員中心</a>
+          </div>
+
+          <div>
+              <ul class="nav navbar-nav side-nav">
+                  <li><a href="member_index.html"><i class="fa fa-home"></i> 首頁 </a></li>
+                  <li><a href="member_cart.html"><i class="fa fa-shopping-cart"></i>  購物車 </a></li>
+                  <li><a href="member_order.html"><i class="fa fa-file-text-o"></i>  我的訂單 </a></li>
+                  <li><a href="member_info.html" style="background-color: #ebc59c; color:black;"><i class="fa fa-user"></i>  會員資訊 </a></li>
+                  <li><a href="../index.html" style="position:fixed; bottom:20px; left:0;"><i class="fa fa-backward"></i> 返回官網 </a></li>
+                  <li id="promodel" style="display: none"><a href="/admin/admin_index.html" style="position:fixed; bottom:70px; left:0;"><i class="fa fa-star"></i> 進階模式 </a></li>
+              </ul>
+
+              <ul class="nav navbar-nav navbar-right navbar-user">
+                  <li>
+                      <a href="" id="loginName"><i class="fa fa-users"></i></a>
+                  <li></li>
+                  <li><a href="/logout"><i class="fa fa-power-off"></i> Log Out</a></li>
+                  </li>
+              </ul>
+          </div>
+      </nav>
+
+      <div id="page-wrapper">
+          <div class="row">
+              <div class="col-lg-12">
+                  <h1>會員資訊</h1>
+                  <ol class="breadcrumb">
+                      <li><a href="member_index.html"><i class="fa fa-home"></i> 首頁 </a></li>
+                      <li class="active"> 會員資訊 </li>
+                  </ol>
+              </div>
+          </div>
+
+          <table class="table table-striped">
+              <tbody>
+              <tr>
+                  <th >姓名</th>
+                  <td id="td-name"></td>
+              </tr>
+              <tr>
+                  <th >電話</th>
+                  <td id="td-tel"></td>
+              </tr>
+              <tr>
+                  <th >地址</th>
+                  <td id="td-addr"></td>
+              </tr>
+              <tr>
+                  <th>信箱</th>
+                  <td id="td-email"></td>
+              </tr>
+              <tr>
+                  <th>帳號</th>
+                  <td id="td-username"></td>
+              </tr>
+              </tbody>
+          </table>
+          <input type="button" value="更新資料" id="btn-update" style="background-color: #1e7e34">
+          <input type="button" value="修改密碼" id="btn-updatePassword" style="background-color: blue">
+          <input type="button" value="註銷帳號" id="btn-deleteUser" style="background-color: red">
+      </div>
+  </div>
+    <!-- JavaScript -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.js"></script>
+  <dialog id="infoModal-update">
+      <p id="updateFormTitle"> 修改資料 </p>
+      <hr>
+      <form action="" method="post" id="update-memberinfo-form" onsubmit="return false">
+          <div>
+              <label for="name-update" class="update-form">姓名</label>
+              <input type="text" id="name-update">
+
+              <label for="tel-update" class="update-form">電話</label>
+              <input type="text" id="tel-update">
+
+              <label for="addr-update" class="update-form">地址</label>
+              <input type="text" id="addr-update">
+
+              <label for="email-update" class="update-form">信箱</label>
+              <input type="email" id="email-update">
+
+              <label for="username-update" class="update-form">帳號</label>
+              <input type="text" id="username-update" disabled>
+
+              <div style="text-align:center;">
+                  <input type="submit" id="update-send" value="送出">
+                  <input type="button" id="update-close" value="關閉">
+              </div>
+          </div>
+      </form>
+  </dialog>
+
+  <dialog id="infoModal-updatePassword" style="height: 350px; width: 300px">
+      <p> 修改密碼 </p>
+      <hr>
+      <form action="" method="post" id="updatePassword-form" onsubmit="return false">
+          <div>
+
+              <label for="password-update" class="update-form">目前密碼</label>
+              <input type="password" id="password-old">
+
+              <label for="password-update" class="update-form">新的密碼</label>
+              <input type="password" id="password-update">
+
+              <label for="confirm_password-update" class="update-form">確認密碼</label>
+              <input type="password" id="confirm_password-update">
+
+              <div style="text-align:center;">
+                  <input type="submit" id="updatePassword-send" value="送出">
+                  <input type="button" id="updatePassword-close" value="關閉">
+              </div>
+          </div>
+      </form>
+  </dialog>
+
+  <dialog id="infoModal-deleteUser" style="height: 200px; width: 300px">
+      <p> 註銷帳號 </p>
+      <hr>
+      <form action="" method="post" id="deleteUser-form" onsubmit="return false">
+          <div style="text-align:center;">
+
+              <span style="font-size: 15px">輸入密碼</span>
+              <input type="password" id="password">
+              <br><br>
+              <div style="text-align:center;">
+                  <input type="submit" id="deleteUser-send" value="送出">
+                  <input type="button" id="deleteUser-close" value="關閉">
+              </div>
+          </div>
+      </form>
+  </dialog>
+
+  <dialog id="error-dialog" style="height: 150px; width: 300px;">
+      <p> 錯誤 </p>
+      <hr>
+          <div style="text-align:center; font-size: 20px">
+              <span  id="error-text"></span>
+              <hr>
+              <div style="text-align:center;">
+                  <input type="button" id="error-close" value="關閉">
+              </div>
+          </div>
+  </dialog>
+
+  <dialog id="check-dialog" style="height: 150px; width: 300px;">
+      <p> 警告 </p>
+      <hr>
+      <div style="text-align:center; font-size: 20px">
+          <span>帳號註銷後將無法恢復！</span>
+          <hr>
+          <div style="text-align:center;">
+              <input type="button" id="check-send" value="註銷">
+              <input type="button" id="check-close" value="關閉">
+          </div>
+      </div>
+  </dialog>
+
+  <script type="text/javascript">
+      var userId, username, name, email, tel, addr
+      let infoModal = document.querySelector("#infoModal-update")
+      let passwordModal = document.querySelector("#infoModal-updatePassword")
+      let deleteModal = document.querySelector("#infoModal-deleteUser")
+      let errorModal = document.querySelector("#error-dialog")
+      let checkModal = document.querySelector("#check-dialog")
+
+      $(document).ready(function () {
+          $.ajax({
+              url: '/users/current',
+              type: "get",
+              dataType: "json",
+              success: function (userinfo) {
+                  if(userinfo.auth.includes('admin')){$('#promodel').show()}
+                  console.log(userinfo)
+                  userId = userinfo.userId
+                  username = userinfo.username
+                  name = userinfo.name
+                  email = userinfo.email
+                  tel = userinfo.tel
+                  addr = userinfo.addr
+                  $('#td-name').text(name)
+                  $('#td-tel').text(tel)
+                  $('#td-addr').text(addr)
+                  $('#td-email').text(email)
+                  $('#td-username').text(username)
+                  $('#loginName').append(' ' + name)
+              }
+          })
+
+      })
+
+      $('#btn-update').click(function () {
+          $('#name-update').val(name)
+          $('#tel-update').val(tel)
+          $('#addr-update').val(addr)
+          $('#email-update').val(email)
+          $('#username-update').val(username)
+          infoModal.showModal()
+      })
+
+      $('#update-close').click(function () {
+          infoModal.close()
+      })
+      $('#update-send').click(function () {
+          $.ajax({
+              url: '/users/' + userId,
+              type: "put",
+              dataType: "json",
+              data:JSON.stringify({
+                  name:$('#name-update').val(),
+                  tel:$('#tel-update').val(),
+                  addr:$('#addr-update').val(),
+                  email:$('#email-update').val()
+              }),
+              contentType:"application/json",
+              success: function (user) {
+                  console.log(user)
+                  location.reload()
+              },error:function () {
+                  alert("error")
+              }
+          })
+          infoModal.close()
+      })
+      $('#btn-updatePassword').click(function () {
+          $('#password-old').val("")
+          $('#password-update').val("")
+          $('#confirm_password-update').val("")
+          passwordModal.showModal()
+          $('#updatePassword-send').click(function () {
+              var oldPwd = $('#password-old').val()
+              var newPwd = $('#password-update').val()
+              var cfPwd  = $('#confirm_password-update').val()
+              if(oldPwd.length>0 && newPwd.length>0 && cfPwd.length>0){
+                  if(newPwd === cfPwd){
+                      $.ajax({
+                          url: '/users/' + userId + '/pwdupdate',
+                          type: 'post',
+                          contentType: "application/json",
+                          data: JSON.stringify({
+                              passwordOld: oldPwd,
+                              passwordNew: newPwd
+                          }),
+                          success: function () {
+                              alert("更改完成")
+                          },error:function () {
+                              alert("出錯了")
+                          }
+                      })
+                      passwordModal.close()
+                  }else {
+                      $('#error-text').text("請再次確認密碼是否相符")
+                      errorModal.showModal()
+                  }
+              }else {
+                  $('#error-text').text("密碼不得為空")
+                  errorModal.showModal()
+              }
+          })
+      })
+      $('#updatePassword-close').click(function () {
+          passwordModal.close()
+      })
+      $('#error-close').click(function () {
+          errorModal.close()
+      })
+      $('#btn-deleteUser').click(function () {
+          $('#password').val("")
+          deleteModal.showModal()
+          $('#deleteUser-send').click(function (){
+              if($('#password').val().length > 0){
+                  deleteModal.close()
+                  checkModal.showModal()
+                  $('#check-send').click(function () {
+                      checkModal.close()
+                      $.ajax({
+                          url: '/users/' + userId,
+                          type: 'delete',
+                          data: {
+                              password: $('#password').val()
+                          },
+                          success: function () {
+                              alert("註銷完成")
+                              location.href = "/logout"
+                          },error:function () {
+                              alert("出錯了")
+                          }
+                      })
+
+                  })
+              }else {
+                  deleteModal.close()
+                  $('#error-text').text("密碼不得為空")
+                  errorModal.showModal()
+              }
+          })
+
+      })
+      $('#deleteUser-close').click(function () {
+          deleteModal.close()
+      })
+      $('#check-close').click(function () {
+          checkModal.close()
+      })
+  </script>
+  </body>
+</html>

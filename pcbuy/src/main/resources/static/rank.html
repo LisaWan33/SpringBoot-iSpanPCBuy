@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description">
+    <meta name="author">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,300,400,500,700,900" rel="stylesheet">
+    <title>hardware 天梯效能排行</title>
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/font-awesome.css">
+    <link rel="stylesheet" href="/assets/css/templatemo-softy-pinko.css">
+<style>
+    .tab_css{display:flex;flex-wrap:wrap;justify-content:center;}
+    .tab_css input{display:none}
+    .tab_css label{margin: 0 5px 5px 0; padding: 10px 16px; cursor: pointer; border-radius: 5px; background: #999; color: #fff; opacity: 0.5;}
+    .tab_content{order:1;display: none; width:100%; border-bottom: 3px solid #ddd; line-height: 1.6; font-size: .9em; padding: 15px; border: 1px solid #ddd; border-radius: 5px;}
+    .tab_css input:checked + label, .tab_css label:hover{opacity: 1; font-weight:bold;}
+    .tab_css input:checked + label + .tab_content{display: initial;}
+</style>
+</head>
+<script src="https://cdn.staticfile.org/echarts/4.8.0/echarts.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<body>
+<!-- ***** Header Area Start ***** -->
+<header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="index.html" class="logo">
+                        <img src="/assets/images/PCBUY_logo.png" style="width: 120px"/>
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                        <li><a href="index.html#jump"> 產品購買 </a></li>
+                        <li><a href="intro.html" > 電腦主機零組件介紹 </a></li>
+                        <li><a href="rank.html" style="color: #ff589e"> 效能排行天梯 </a></li>
+                        <li><a href="contact_us.html"> 聯絡我們 </a></li>
+                        <li><a href="/member/member_index.html" id="memberDiv" class="fa fa-user">會員中心</a></li>
+                    </ul>
+                    <a class='menu-trigger'>
+                        <span>菜單欄</span>
+                    </a>
+                    <!-- ***** Menu End ***** -->
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- ***** Header Area End ***** -->
+<br><br><br><br><br>
+
+    <div class="tab_css" style="background-color: snow">
+        <!-- TAB1 打包區塊 start -->
+        <input id="tab1" type="radio" name="tab" checked="checked"/>
+        <label for="tab1">處理器效能排行天梯</label>
+        <div class="tab_content">
+            <!-- ***** Home Parallax Start ***** -->
+            <section class="mini" id="cpurank">
+                <div class="mini-content">
+                    <div class="container">
+                        <!-- ***** Mini Box Start ***** -->
+    <!--                    <div class="row">-->
+    <!--                        <div class="col-lg-2 col-md-3 col-sm-6 col-6">-->
+    <!--                            <a href="#" class="mini-box">-->
+
+    <!--                            </a>-->
+    <!--                        </div>-->
+    <!--                        <div class="col-lg-2 col-md-3 col-sm-6 col-6">-->
+    <!--                            <a href="#" class="mini-box">-->
+    <!--                            </a>-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+                        <!-- ***** Mini Box End ***** -->
+                    </div>
+                </div>
+            </section>
+            <!-- ***** Home Parallax End ***** -->
+        </div>
+        <!-- TAB1 打包區塊 end -->
+
+
+
+
+
+
+
+
+        <!-- TAB2 打包區塊 start -->
+        <input id="tab2" type="radio" name="tab"/>
+        <label for="tab2">顯示卡效能排行天梯</label>
+        <div class="tab_content">
+    <!--        第 2 個頁籤內容區塊<br/>-->
+    <!--        WFU BLOG | Blogger 調校資料庫<br/>-->
+    <!--        第 2 個頁籤內容區塊<br/>-->
+    <!--        WFU BLOG | Blogger 調校資料庫<br/>-->
+
+            <!-- ***** gpurank Start ***** -->
+            <section class="section" id="gpurank">
+                <div class="container">
+                    <!-- ***** Section Title Start ***** -->
+<!--                    <div class="row">-->
+<!--                        <div class="col-lg-12">-->
+<!--                        123-->
+<!--                        </div>-->
+<!--                        <div class="offset-lg-3 col-lg-6">-->
+<!--                            <div class="center-text">-->
+<!--                                123-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <!-- ***** Section Title End ***** -->
+
+                    <div class="row">
+                        <div id="gpuchart" style="width: 900px; height: 400px;"></div>
+                    </div>
+                </div>
+            </section>
+            <!-- ***** gpurank End ***** -->
+
+
+        </div>
+        <!-- TAB2 打包區塊 end -->
+    </div>
+
+        <!-- ***** Footer Start ***** -->
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <ul class="social">
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="#"><i class="fa fa-rss"></i></a></li>
+                            <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="copyright">Copyright &copy;2023 PCBuy company</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- jQuery -->
+        <script src="/assets/js/jquery-2.1.0.min.js"></script>
+        <!-- Bootstrap -->
+        <script src="/assets/js/popper.js"></script>
+        <script src="/assets/js/bootstrap.min.js"></script>
+        <!-- Plugins -->
+        <script src="/assets/js/scrollreveal.min.js"></script>
+        <script src="/assets/js/waypoints.min.js"></script>
+        <script src="/assets/js/jquery.counterup.min.js"></script>
+        <script src="/assets/js/imgfix.min.js"></script>
+        <!-- Global Init -->
+        <script src="/assets/js/custom.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+        <script type="text/javascript">
+            var gpuchart = echarts.init(document.getElementById('gpuchart'));
+            var data = [];
+            var flag = 0;
+            var refreshChart = function () {
+                fetch('gpudata.json')
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (newData) {
+                        data = newData;
+                        gpuchart.setOption({
+                            //鼠標懸停工具提示
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                }
+                            },
+                            //圖例中顯示的數據
+                            legend: {
+                                data: ['data']
+                            },
+                            //圖表網格的大小和位置
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true,
+                                show: true
+                            },
+                            xAxis: {
+                                type: 'value',
+                                boundaryGap: [0, 0.01],
+                                axisLine: { show: false },
+                                axisLabel: { show: false },
+                            },
+                            yAxis: {
+                                type: 'category',
+                                data: data.slice(flag, flag + 10).map(function (item) {
+                                    return item.name;
+                                }),
+                                axisLine: { show: false },
+                            },
+                            //圖表的數據系列
+                            series: [
+                                {
+                                    type: 'bar',
+                                    data: data.slice(flag, flag + 10).map(function (item) {
+                                        return item.value;
+                                    }),
+                                    itemStyle: {
+                                        barBorderRadius:[0,33,33,0],
+                                        color: {
+                                            type: 'linear',
+                                            x: 0,
+                                            y: 0,
+                                            x2: 0,
+                                            y2: 1,
+                                            colorStops: [
+                                                {
+                                                    offset: 0, color: '#8261ee'
+                                                },
+                                                {
+                                                    offset: 1, color: '#8a2be2'
+                                                }
+                                            ],
+                                            globalCoord: false
+                                        }
+                                    }
+                                }]
+                        });
+                        flag = (flag + 10) % data.length;
+                    });
+            };
+            refreshChart();
+            setInterval(refreshChart, 5000);
+        </script>
+  </body>
+</html>

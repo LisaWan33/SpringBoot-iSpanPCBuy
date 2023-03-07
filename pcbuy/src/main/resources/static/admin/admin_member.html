@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description">
+    <meta name="author">
+    <title>管理員 - 後台會員管理</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!-- Add custom CSS here -->
+    <link href="css/sb-admin.css" rel="stylesheet">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+    <style>
+        table{
+            margin: auto;
+            padding: 20px;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: large;
+        }
+        tr{
+            border: 1px solid #656464;
+        }
+        th{
+            border: 1px solid #3d3939;
+            padding: 10px 30px;
+            background-color: #3d3939;
+            color: #FFF;
+        }
+        td{
+            border: 1px solid #3d3939;
+            padding: 10px 30px;
+            background-color: #f8f1de;
+            color: #3d3939;
+        }
+
+        /*第一欄第一列：左上*/
+        tr:first-child th:first-child{
+            border-top-left-radius: 10px;
+        }
+        /*第一欄最後列：左下*/
+        tr:last-child td:first-child{
+            border-bottom-left-radius: 10px;
+        }
+        /*最後欄第一列：右上*/
+        tr:first-child th:last-child{
+            border-top-right-radius: 10px;
+        }
+        /*最後欄第一列：右下*/
+        tr:last-child td:last-child{
+            border-bottom-right-radius: 10px;
+        }
+</style>
+</head>
+
+<body>
+<div id="wrapper">
+    <link rel="stylesheet" href="css/product_style.css">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="admin_index.html"><img src="../assets/images/logo2.png" style="width: 70px;height: 20px;position: relative"> 後台管理</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav side-nav">
+                <li><a href="admin_index.html" ><i class="fa fa-home"></i> 首頁 </a></li>
+                <li><a href="admin_member.html" style="background-color: #e7e7e7; color:black;"><i class="fa fa-user-md"></i>  會員管理 </a></li>
+                <li><a href="admin_commodity.html"><i class="fa fa-wrench"></i>  商品管理 </a></li>
+                <li><a href="admin_order.html"><i class="fa fa-file-text"></i>  訂單管理 </a></li>
+                <li><a href="../index.html" style="position:fixed; bottom:20px; left:0;"><i class="fa fa-backward"></i> 返回官網 </a></li>
+                <li><a href="/member/member_index.html" style="position:fixed; bottom:70px; left:0;"><i class="fa fa-adjust"></i> 一般模式 </a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right navbar-user">
+                <li class="dropdown user-dropdown">
+                    <a href="#"><i class="fa fa-users"></i> 管理員 </a>
+                <li class="divider"></li>
+                <li><a href="/logout"><i class="fa fa-power-off"></i> Log Out</a></li>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>會員管理</h1>
+                <ol class="breadcrumb">
+                    <li><a href="admin_index.html"><i class="fa fa-home"></i> 首頁</a></li>
+                    <li class="active">會員管理</li>
+                </ol>
+                    <div class="col-lg-12">
+                        <br>
+                        <input type="button" value="新增資料" id="btn-create" style="background-color: #2a6496">
+                        <input type="button" value="修改資料" id="btn-update" style="background-color: #1e7e34">
+                        <input type="button" value="刪除資料" id="btn-delete" style="background-color: #ac2925" >
+                        <br><br><br>
+                        <table id="usersTable" style="width: 100%">
+                            <tr id="usersTh">
+                                <th style="text-align: center">選取</th>
+                                <th style="text-align: left">編號</th>
+                                <th style="text-align: left">姓名</th>
+                                <th style="text-align: left">電話</th>
+                                <th style="text-align: left">信箱</th>
+                                <th style="text-align: left">地址</th>
+                            </tr>
+                        </table>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- JavaScript -->
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url:'/users/all',
+            type:'get',
+            dataType:'json',
+            success:function (userList) {
+                // console.log(userList)
+                var i=1
+                $.each(userList, function (key, value) {
+                    $('#usersTable').append('<tr style="text-align: center; font-size: 18px"><td><input type="radio" name="usersRaido" value=' + userList[key].userId + '></td><td>' + i++ + '</td><td>' + userList[key].name + '</td><td>' + userList[key].tel + '</td><td style="text-align:left">' + userList[key].email + '</td><td style="text-align:left">' + userList[key].addr + '</td></tr>')
+                })
+            }
+        })
+    })
+</script>
+
+</body>
+</html>

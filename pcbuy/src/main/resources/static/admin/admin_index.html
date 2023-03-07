@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="description">
+      <meta name="author">
+
+      <title>首頁 - 後台管理</title>
+
+      <!-- Bootstrap core CSS -->
+      <link href="css/bootstrap.css" rel="stylesheet">
+
+      <!-- Add custom CSS here -->
+      <link href="css/sb-admin.css" rel="stylesheet">
+      <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+      <!-- Page Specific CSS -->
+      <link rel="stylesheet" href="css/morris-0.4.3.min.css">
+  </head>
+
+  <body>
+
+    <div id="wrapper">
+
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+            <a class="navbar-brand" href="admin_index.html"><img src="../assets/images/logo2.png" style="width: 70px;height: 20px;position: relative"> 後台管理</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav side-nav">
+              <li><a href="admin_index.html" style="background-color: #e7e7e7; color:black;"><i class="fa fa-home"></i> 首頁 </a></li>
+              <li><a href="admin_member.html"><i class="fa fa-user-md"></i>  會員管理 </a></li>
+              <li><a href="admin_commodity.html"><i class="fa fa-wrench"></i>  商品管理 </a></li>
+              <li><a href="admin_order.html"><i class="fa fa-file-text"></i>  訂單管理 </a></li>
+              <li><a href="../index.html" style="position:fixed; bottom:20px; left:0;"><i class="fa fa-backward"></i> 返回官網 </a></li>
+              <li><a href="/member/member_index.html" style="position:fixed; bottom:70px; left:0;"><i class="fa fa-adjust"></i> 一般模式 </a></li>
+
+          </ul>
+            <ul class="nav navbar-nav navbar-right navbar-user">
+                <li class="dropdown user-dropdown">
+                    <a href="#"><i class="fa fa-users"></i> 管理員 </a>
+                <li class="divider"></li>
+                <li><a href="/logout"><i class="fa fa-power-off"></i> Log Out</a></li>
+                </li>
+            </ul>
+        </div>
+      </nav>
+
+      <div id="page-wrapper">
+          <div class="row">
+              <div class="col-lg-12">
+                  <h1>歡迎回來 <small>後台管理介面</small></h1>
+                        <ol class="breadcrumb">
+                          <li class="active"><i class="fa fa-home"></i> 首頁</li>
+                        </ol>
+                        <div class="alert alert-info alert-dismissable">
+                            <figcaption class="callout">
+                                <h3>提示訊息</h3>
+                                <p>PCBUY電腦商城管理者您好!在這裡能讓您管理會員、商品、訂單!</p>
+                            </figcaption>
+                        </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>

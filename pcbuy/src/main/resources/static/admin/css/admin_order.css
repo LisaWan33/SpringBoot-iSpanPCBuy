@@ -1,0 +1,27 @@
+.out{
+    overflow: clip;
+    border-radius:20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.35);
+}
+
+
+.button {
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 30px;
+}
+
+
+th{
+    background-color: #3d3939;
+    color:snow;
+    height:40px;
+    font-size: 20px;
+    font-family:"Times New Roman";
+}
+
+
+
